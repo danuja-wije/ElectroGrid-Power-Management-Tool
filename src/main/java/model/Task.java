@@ -1,126 +1,85 @@
 package model;
+//import models
+import model.Worker;
 
 import java.sql.*;
+import java.util.List;
 
 public class Task {
-	private static final String USERNAME = "root";
-	private static final String URL = "jdbc:mysql://127.0.0.1:3306/electrogriddb";
-	private static final String DRIVER = "com.mysql.cj.jdbc.Driver";
-	private static final String PASSWORD = "";
-	private static Connection connection = null;
-	private static String query = "";
-	private static PreparedStatement preparedStatement = null;
-	private static Statement statement = null;
-	private static ResultSet resultSet = null;
-	
-	
-	private Connection connect() throws SQLException {
-		if (connection != null && !connection.isClosed()) {
-			return connection;
-		}
-		else {
-			try {
-				Class.forName(DRIVER);
-				connection = DriverManager.getConnection(URL,USERNAME,PASSWORD);
-				System.out.println("Successfully Connected");
-			} catch (Exception e) {
-				// TODO: handle exception
-				e.printStackTrace();
-			}
-			return connection;
-		}
+
+	private int taskID;
+	private String title;
+	private String desc;
+	private String customerID;
+	private List<Worker> worker;
+	private String handleBy;
+	private String create;
+	private String lastUpdate;
+	private String message;
+
+	public Task(int taskID, String title, String desc, String customerID, List<Worker>worker, String handleBy,
+			String create, String lastUpdate) {
+		super();
+		this.taskID = taskID;
+		this.title = title;
+		this.desc = desc;
+		this.customerID = customerID;
+		this.worker = worker;
+		this.handleBy = handleBy;
+		this.create = create;
+		this.lastUpdate = lastUpdate;
 	}
-	public String viewTask(int taskID) {
-		String output = "";
-		
-		try {
-			connection = connect();
-			
-			if(connection == null) {
-				output = "Error while connecting to the database for inserting";
-				return output;
-			}
-			
-			query = "select * from task where taskID = "+taskID;
-			String query_workers = "select * from task_workers where taskID = "+taskID;
-			statement = connection.createStatement();
-	
-			resultSet = statement.executeQuery(query);
-			
 
-			while(resultSet.next()) {
-				String title = resultSet.getString("title");
-				String desc = resultSet.getString("description");
-				String handleBy = resultSet.getString("handleBy");
-				String status = resultSet.getString("status");
-				String created =resultSet.getString("createTime");
-				String lastUpdate = resultSet.getString("lastUpdate");
-				output =  "<label>Task Title :"+title+"</label>" + "</br>"
-						+ "<label>Task Description :"+desc+"</label>" + "</br>"
-						+ "<label>Handle BY :"+handleBy+"</label>" + "</br>"
-						+"<label>Status :"+status+"</label>" + "</br>"
-						+ "<label>Created Date :"+created+"</label>" + "</br>"
-						+"<label>Last Update :"+lastUpdate+"</label>" + "</br>";
-			}
-			
-			ResultSet worker_rs = statement.executeQuery(query_workers);
-			
-			output  +=  "<table border='1'><tr><th>Worker ID</th><th>Action</th>" +
-					"</tr>";
-
-			while(worker_rs.next()) {
-				String workerID = worker_rs.getString("workerID");
-				output +=  "<tr><td>"+workerID+"</td>"
-								 + "<td><form method='post' action='items.jsp'>"
-								 + "<input name='btnUpdate' type='button' value='Update' class='btn btn-secondary'>"
-								 + "<input name='btnRemove' type='submit' value='Remove' class='btn btn-danger'>"
-								 + "<input name='itemID' type='hidden' value='" + workerID 
-								 + "</form></td></tr>"; 
-			}
-			
-			output += "</table>";
-			
-			
-			connection.close();
-			query = "";
-			
-		} catch (Exception e) {
-			// TODO: handle exception
-			output = "Error while reading tasks";
-			System.err.println(e.getMessage());
-		}
-		return output;
+	public Task() {
+		super();
+		this.taskID = -1;
+		this.title = null;
+		this.desc = null;
+		this.customerID = null;
+		this.worker = null;
+		this.handleBy = null;
+		this.create = null;
+		this.lastUpdate = null;
 	}
-	
 
-	public String insertWorkers(String taskID,String workerID) {
-		String output = "";
-		try {
-			connection  = connect();
-			if (connection == null ) {
-				output = "Error while connectiong to the database for Inserting";
-				return output;
-			}
-
-			query = "INSERT INTO `task_workers` (`taskID`, `workerID`) VALUES (?, ?)";
-			
-			preparedStatement = connection.prepareStatement(query);
-			
-			preparedStatement.setString(1, taskID);
-			preparedStatement.setString(2, workerID);
-			
-			preparedStatement.execute();
-			
-			connection.close();
-			
-			output = "Inserted Successfully";
-			query = "";
-			
-		} catch (Exception e) {
-			// TODO: handle exception
-			output = "Error while inserting the workers";
-			System.err.println(e.getMessage());
-		}
-		return output;
+	public int getTaskID() {
+		return taskID;
 	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public String getDesc() {
+		return desc;
+	}
+
+	public String getCustomerID() {
+		return customerID;
+	}
+
+	public List<Worker> getWorker() {
+		return worker;
+	}
+
+	public String getHandleBy() {
+		return handleBy;
+	}
+
+	public String getCreate() {
+		return create;
+	}
+
+	public String getLastUpdate() {
+		return lastUpdate;
+	}
+
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
+	}
+
 }
