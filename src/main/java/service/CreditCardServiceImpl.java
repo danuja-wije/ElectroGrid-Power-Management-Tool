@@ -6,7 +6,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.List;
 
 import model.CreditCard;
@@ -24,9 +23,6 @@ public class CreditCardServiceImpl implements CreditCardService{
 	private static PreparedStatement preparedStatement = null;
 	private static Statement statement = null;
 	private static ResultSet resultSet = null;
-	
-	private static ArrayList<CreditCard> cardList = null;
-	String output = "";
 	
 	//Card model
 	private static CreditCard card;
@@ -53,23 +49,23 @@ public class CreditCardServiceImpl implements CreditCardService{
 	//Insert card
 	@Override
 	public String insertCreditCard(CreditCard card) {
-		
+		String output = "";
 		try {
 			connection  = connect();
 			if (connection == null ) {
-				output = "Error while connectiong to the database";
+				output = "Error while connectiong to the database for Inserting";
 				return output;
 			}
 
 			//Query
-			query = "INSERT INTO `credit_cards` (`user_ID`, `card_number`, `cvv`, `exp_date`, `name_on_card`, `card_issuer`)"
+			query = "INSERT INTO `credit_cards` (`user_ID`, `card_number`, `ccv`, `exp_date`, `name_on_card`, `card_issuer`)"
 					+ " VALUES (?, ?, ?, ?, ?, ?)";
 
 			preparedStatement = connection.prepareStatement(query);
 
 			preparedStatement.setString(1, card.getUser_ID());
 			preparedStatement.setLong(2, card.getCard_number());
-			preparedStatement.setInt(3, card.getCvv());
+			preparedStatement.setInt(3, card.getCcv());
 			preparedStatement.setString(4, card.getDate());
 			preparedStatement.setString(5, card.getName_on_card());
 			preparedStatement.setString(6, card.getCard_issuer());
@@ -90,60 +86,15 @@ public class CreditCardServiceImpl implements CreditCardService{
 	}
 
 
-	//View
-	@Override
-	public ArrayList<CreditCard> viewCards(String UID) {
-		//Card attribute
-		String user_ID = "";
-		long card_number = 0;
-		int cvv = 0;
-		String date = "";
-		String name_on_card = "";
-		String card_issuer ="";
-		
-		//Card List
-		cardList = new ArrayList<CreditCard>();
-		
-		//Connection
-		try {
-			connection = connect();
-			
-			if(connection == null) {
-				output = "Error while connecting to the database";
-				return null;
-			}
-			
-			//Query
-			query = "SELECT * FROM credit_cards WHERE user_ID = " + UID;
-			
-			//Execute
-			statement = connection.createStatement();
-			resultSet = statement.executeQuery(query);
-			
-			//Get all results
-			while(resultSet.next()) {
-				user_ID = resultSet.getString("user_ID");
-				card_number = resultSet.getLong("card_number");
-				cvv = resultSet.getInt("cvv");
-				date = resultSet.getNString("exp_date");
-				name_on_card = resultSet.getString("name_on_card");
-				card_issuer = resultSet.getString("card_issuer");
-				
-				//Add to list
-				cardList.add(new CreditCard(user_ID, card_number, cvv, date, name_on_card, card_issuer));
-			}
-			
-		}catch(Exception e) {
-			System.err.println(e.getMessage());
-		}
-		
-		return cardList;
- 
-}
-
-	
 	@Override
 	public String deleteCard(long cardNumber) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public CreditCard viewCard() {
 		// TODO Auto-generated method stub
 		return null;
 	}
