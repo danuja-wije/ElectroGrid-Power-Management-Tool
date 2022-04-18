@@ -109,7 +109,7 @@ public class CreditCardServiceImpl implements CreditCardService{
 			connection = connect();
 			
 			if(connection == null) {
-				output = "Error while connecting to the database";
+				System.err.println("Error while connecting to the database");
 				return null;
 			}
 			
@@ -134,24 +134,78 @@ public class CreditCardServiceImpl implements CreditCardService{
 			}
 			
 		}catch(Exception e) {
-			System.err.println(e.getMessage());
+			System.err.println("Error getting data " + e.getMessage());
 		}
 		
 		return cardList;
- 
-}
+	}
 
 	
+	//Delete
 	@Override
 	public String deleteCard(long cardNumber) {
-		// TODO Auto-generated method stub
-		return null;
+		//Connection
+		try {
+			connection = connect();
+			
+			if(connection == null) {
+				output = "Error while connectiong to the database";
+				return output;
+			}
+			
+			//Query
+			query = "DELETE FROM credit_cards WHERE card_number = " + cardNumber;
+			statement = connection.createStatement();
+			int del = statement.executeUpdate(query);
+			
+			if(del > 0) {
+				output = "Card removed";
+			}
+			else {
+				output = "Card not found";
+			}
+			
+		}catch(Exception e) {
+			output = "Error deleting data " + e.getMessage();
+			System.err.println(output);
+			return output;
+		}
+		return output;
 	}
 
 
 	@Override
-	public String updateCard(CreditCard card) {
-		// TODO Auto-generated method stub
-		return null;
+	public String updateCard(long cardNumber, CreditCard card) {
+		try {
+			connection  = connect();
+			if (connection == null ) {
+				output = "Error while connectiong to the database";
+				return output;
+			}
+
+			//Query
+			query = "UPDATE credit_cards SET card_number = ?, cvv = ?, exp_date = ?, name_on_card = ?, card_issuer = ? WHERE card_number = " + cardNumber;
+
+			preparedStatement = connection.prepareStatement(query);
+
+			preparedStatement.setLong(1, card.getCard_number());
+			preparedStatement.setInt(2, card.getCvv());
+			preparedStatement.setString(3, card.getDate());
+			preparedStatement.setString(4, card.getName_on_card());
+			preparedStatement.setString(5, card.getCard_issuer());
+			
+			preparedStatement.executeUpdate();
+
+			connection.close();
+
+			output = "Updated Successfully";
+			query = "";
+
+		} catch (Exception e) {
+			// TODO: handle exception
+			output = "Error while updating the credit card";
+			System.err.println(e.getMessage());
+		}
+		return output;
 	}
 }
