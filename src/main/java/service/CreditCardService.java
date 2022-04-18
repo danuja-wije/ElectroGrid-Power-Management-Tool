@@ -1,10 +1,12 @@
 package service;
 
+import java.util.ArrayList;
+
 import model.CreditCard;
 
 public interface CreditCardService {
 	public String insertCreditCard(CreditCard card);
 	public String deleteCard(long cardNumber);
-	public CreditCard viewCard();
+	public ArrayList<CreditCard> viewCards(String user_ID);
 	public String updateCard(CreditCard card);
 }
