@@ -3,17 +3,17 @@ package model;
 public class CreditCard {
 	private String user_ID;
 	private long card_number;
-	private int ccv;
+	private int cvv;
 	private String date;
 	private String name_on_card;
 	private String card_issuer;
 	
 	//Constructor
-	public CreditCard(String user_ID, long card_number, int ccv, String date, String name_on_card, String card_issuer) {
+	public CreditCard(String user_ID, long card_number, int cvv, String date, String name_on_card, String card_issuer) {
 		super();
 		this.user_ID = user_ID;
 		this.card_number = card_number;
-		this.ccv = ccv;
+		this.cvv = cvv;
 		this.date = date;
 		this.name_on_card = name_on_card;
 		this.card_issuer = card_issuer;
@@ -36,12 +36,12 @@ public class CreditCard {
 		this.card_number = card_number;
 	}
 
-	public int getCcv() {
-		return ccv;
+	public int getCvv() {
+		return cvv;
 	}
 
-	public void setCcv(int ccv) {
-		this.ccv = ccv;
+	public void setCvv(int cvv) {
+		this.cvv = cvv;
 	}
 
 	public String getDate() {
