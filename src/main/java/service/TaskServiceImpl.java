@@ -43,6 +43,7 @@ public class TaskServiceImpl implements TaskService {
 			return connection;
 		}
 	}
+	
 	public Task viewTask(int taskID) {
 		//task attribute
 		String output = "";
