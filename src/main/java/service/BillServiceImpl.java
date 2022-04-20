@@ -91,7 +91,7 @@ public class BillServiceImpl implements BillService{
 
 	//Delete
 	@Override
-	public String deleteBill(String bill_ID) {
+	public String deleteBill(int bill_ID) {
 		//Connection
 		try {
 			connection = connect();
@@ -127,7 +127,7 @@ public class BillServiceImpl implements BillService{
 	public ArrayList<Bill> viewAllBills(String user_ID) {
 		
 		//Bill attribute
-		String bill_ID = "";
+		int bill_ID = 0;
 		int year = 0;
 		String month = "";
 		String date_created = "";
@@ -157,7 +157,7 @@ public class BillServiceImpl implements BillService{
 			
 			//Get all results
 			while(resultSet.next()) {
-				bill_ID = resultSet.getString("bill_ID");
+				bill_ID = resultSet.getInt("bill_ID");
 				year = resultSet.getInt("year");
 				month = resultSet.getString("month");
 				date_created = resultSet.getString("date_created");
@@ -180,7 +180,7 @@ public class BillServiceImpl implements BillService{
 	@Override
 	public ArrayList<Bill> viewMonthlyBills(String user_ID, int year, String month) {
 		//Bill attribute
-		String bill_ID = "";
+		int bill_ID = 0;
 		String date_created = "";
 		float units = 0;
 		float unit_price = 0;
@@ -208,7 +208,7 @@ public class BillServiceImpl implements BillService{
 			
 			//Get all results
 			while(resultSet.next()) {
-				bill_ID = resultSet.getString("bill_ID");
+				bill_ID = resultSet.getInt("bill_ID");
 				date_created = resultSet.getString("date_created");
 				units = resultSet.getFloat("units");
 				unit_price = resultSet.getFloat("unit_price");
@@ -228,7 +228,7 @@ public class BillServiceImpl implements BillService{
 
 	//Update bill
 	@Override
-	public String updateBill(String bill_ID, Bill bill) {
+	public String updateBill(int bill_ID, Bill bill) {
 		
 		try {
 			connection  = connect();
@@ -238,11 +238,10 @@ public class BillServiceImpl implements BillService{
 			}
 
 			//Query
-			query = "UPDATE bills SET date_created = ?, units = ?, unit_price = ?, charge = ? WHERE bill_ID = " + bill_ID;
+			query = "UPDATE bills SET units = ?, unit_price = ?, charge = ? WHERE bill_ID = " + bill_ID;
 
 			preparedStatement = connection.prepareStatement(query);
 
-			preparedStatement.setString(1, bill.getDate_created());
 			preparedStatement.setFloat(2, bill.getUnits());
 			preparedStatement.setFloat(3, bill.getUnit_price());
 			preparedStatement.setFloat(4, bill.getCharge());
