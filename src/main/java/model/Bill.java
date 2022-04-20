@@ -4,7 +4,7 @@ public class Bill {
 	
 	//Attributes
 	private String user_ID;
-	private String bill_ID;
+	private int bill_ID;
 	private int year;
 	private String month;
 	private String date_created;
@@ -14,7 +14,7 @@ public class Bill {
 	
 	
 	//Constructor
-	public Bill(String user_ID, String bill_ID, int year, String month, String date_created, float units, float unit_price, float charge) {
+	public Bill(String user_ID, int bill_ID, int year, String month, float units, float unit_price, float charge) {
 		super();
 		this.user_ID = user_ID;
 		this.bill_ID = bill_ID;
@@ -23,10 +23,9 @@ public class Bill {
 		this.units = units;
 		this.unit_price = unit_price;
 		this.charge = charge;
-		this.date_created = date_created;
 	}
-
-	public Bill(String user_ID, int year, String month, String date_created, float units, float unit_price, float charge) {
+	
+	public Bill(String user_ID, int year, String month, float units, float unit_price, float charge) {
 		super();
 		this.user_ID = user_ID;
 		this.year = year;
@@ -34,14 +33,24 @@ public class Bill {
 		this.units = units;
 		this.unit_price = unit_price;
 		this.charge = charge;
-		this.date_created = date_created;
 	}
 
-	public Bill(String date_created, float units, float unit_price, float charge) {
+	public Bill(float units, float unit_price, float charge) {
 		this.units = units;
 		this.unit_price = unit_price;
 		this.charge = charge;
-		this.date_created = date_created;
+	}
+
+	public Bill(String user_ID, int bill_ID, int year, String month, String date_created, float units,
+			float unit_price, float charge) {
+			super();
+			this.user_ID = user_ID;
+			this.year = year;
+			this.month = month;
+			this.units = units;
+			this.unit_price = unit_price;
+			this.charge = charge;
+			this.date_created = date_created;
 	}
 
 	//Getters and setters
@@ -53,11 +62,11 @@ public class Bill {
 		this.user_ID = user_ID;
 	}
 
-	public String getBill_ID() {
+	public int getBill_ID() {
 		return bill_ID;
 	}
 
-	public void setBill_ID(String bill_ID) {
+	public void setBill_ID(int bill_ID) {
 		this.bill_ID = bill_ID;
 	}
 
