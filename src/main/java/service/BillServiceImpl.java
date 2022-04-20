@@ -9,6 +9,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import model.Bill;
+import model.CreditCard;
 
 public class BillServiceImpl implements BillService{
 
@@ -60,22 +61,14 @@ public class BillServiceImpl implements BillService{
 				return output;
 			}
 			
-//			private String user_ID;
-//			private String bill_ID;
-//			private String month;
-//			private String date_created;
-//			private float units;
-//			private float unit_price;
-//			private float charge;
-			
 			//Query
-			query = "INSERT INTO `bills` (`user_ID`, `bill_ID`, `month`, `units`, `unit_price`, `charge`, `date_created,`)"
+			query = "INSERT INTO `bills` (`user_ID`, `year`, `month`, `units`, `unit_price`, `charge`, `date_created,`)"
 					+ " VALUES (?, ?, ?, ?, ?, ?, ?)";
 
 			preparedStatement = connection.prepareStatement(query);
 
 			preparedStatement.setString(1, bill.getUser_ID());
-			preparedStatement.setString(2, bill.getBill_ID());
+			preparedStatement.setInt(2, bill.getYear());
 			preparedStatement.setString(3, bill.getMonth());
 			preparedStatement.setString(4, bill.getDate_created());
 			preparedStatement.setFloat(5, bill.getUnits());
@@ -98,7 +91,7 @@ public class BillServiceImpl implements BillService{
 
 	//Delete
 	@Override
-	public String deleteBill(long bill_ID) {
+	public String deleteBill(String bill_ID) {
 		//Connection
 		try {
 			connection = connect();
@@ -128,23 +121,145 @@ public class BillServiceImpl implements BillService{
 		return output;
 	}
 
+
+	//Get all bills
 	@Override
 	public ArrayList<Bill> viewAllBills(String user_ID) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		//Bill attribute
+		String bill_ID = "";
+		int year = 0;
+		String month = "";
+		String date_created = "";
+		float units = 0;
+		float unit_price = 0;
+		float charge = 0;
+		
+		
+		//Bill List
+		billList = new ArrayList<Bill>();
+		
+		//Connection
+		try {
+			connection = connect();
+			
+			if(connection == null) {
+				System.err.println("Error while connecting to the database");
+				return null;
+			}
+			
+			//Query
+			query = "SELECT * FROM bills WHERE user_ID = " + user_ID;
+			
+			//Execute
+			statement = connection.createStatement();
+			resultSet = statement.executeQuery(query);
+			
+			//Get all results
+			while(resultSet.next()) {
+				bill_ID = resultSet.getString("bill_ID");
+				year = resultSet.getInt("year");
+				month = resultSet.getString("month");
+				date_created = resultSet.getString("date_created");
+				units = resultSet.getFloat("units");
+				unit_price = resultSet.getFloat("unit_price");
+				charge = resultSet.getFloat("charge");
+				
+				//Add to list
+				billList.add(new Bill(user_ID, bill_ID, year, month, date_created, units, unit_price, charge ));
+			}
+			
+		}catch(Exception e) {
+			System.err.println("Error getting data " + e.getMessage());
+		}
+		
+		return billList;
 	}
 
+	//Get bill by year and month
 	@Override
-	public ArrayList<Bill> viewMonthlyBills(String user_ID, String Month) {
-		// TODO Auto-generated method stub
-		return null;
+	public ArrayList<Bill> viewMonthlyBills(String user_ID, int year, String month) {
+		//Bill attribute
+		String bill_ID = "";
+		String date_created = "";
+		float units = 0;
+		float unit_price = 0;
+		float charge = 0;
+		
+		
+		//Bill List
+		billList = new ArrayList<Bill>();
+		
+		//Connection
+		try {
+			connection = connect();
+			
+			if(connection == null) {
+				System.err.println("Error while connecting to the database");
+				return null;
+			}
+			
+			//Query
+			query = "SELECT * FROM bills WHERE user_ID = " + user_ID + "AND year = " + year + "AND month = " + month;
+			
+			//Execute
+			statement = connection.createStatement();
+			resultSet = statement.executeQuery(query);
+			
+			//Get all results
+			while(resultSet.next()) {
+				bill_ID = resultSet.getString("bill_ID");
+				date_created = resultSet.getString("date_created");
+				units = resultSet.getFloat("units");
+				unit_price = resultSet.getFloat("unit_price");
+				charge = resultSet.getFloat("charge");
+				
+				//Add to list
+				billList.add(new Bill(user_ID, bill_ID, year, month, date_created, units, unit_price, charge ));
+			}
+			
+		}catch(Exception e) {
+			System.err.println("Error getting data " + e.getMessage());
+		}
+		
+		return billList;
 	}
+	
 
+	//Update bill
 	@Override
 	public String updateBill(String bill_ID, Bill bill) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		try {
+			connection  = connect();
+			if (connection == null ) {
+				output = "Error while connectiong to the database";
+				return output;
+			}
+
+			//Query
+			query = "UPDATE bills SET date_created = ?, units = ?, unit_price = ?, charge = ? WHERE bill_ID = " + bill_ID;
+
+			preparedStatement = connection.prepareStatement(query);
+
+			preparedStatement.setString(1, bill.getDate_created());
+			preparedStatement.setFloat(2, bill.getUnits());
+			preparedStatement.setFloat(3, bill.getUnit_price());
+			preparedStatement.setFloat(4, bill.getCharge());
+			
+			
+			preparedStatement.executeUpdate();
+
+			connection.close();
+
+			output = "Updated Successfully";
+			query = "";
+
+		} catch (Exception e) {
+			output = "Error while updating the credit card";
+			System.err.println(e.getMessage());
+		}
+		return output;
 	}
 
-	
 }
