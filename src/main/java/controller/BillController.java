@@ -19,22 +19,24 @@ import model.Bill;
 import service.BillService;
 import service.BillServiceImpl;
 
+@Path("/Bill")
 public class BillController {
 
 	//Card service
 		BillService billService = new BillServiceImpl();
 		
-		ArrayList<Bill> bills= new ArrayList<>();;
+		ArrayList<Bill> bills= new ArrayList<>();
 	
 		
 		//Insert
 		@POST
-		@Path("/Generate_bill")
+		@Path("/Generatebill")
 		@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 		@Produces(MediaType.TEXT_PLAIN)
 		public String insertCard(@FormParam("user_ID") String userID , @FormParam("year") int year, @FormParam("month") String month
-				,@FormParam("date_created") String date_created, @FormParam("units") float units, @FormParam("unit_price") float unit_price, @FormParam("charge") float charge) {
-			String output = billService.generateBill(new Bill(userID, year, month, date_created, units, unit_price, charge));
+			,String date_created, @FormParam("units") float units, @FormParam("unit_price") float unit_price) {
+			float charge = units * unit_price;
+			String output = billService.generateBill(new Bill(userID, year, month, units, unit_price, charge));
 			return output;
 		}
 		
@@ -55,7 +57,7 @@ public class BillController {
 		@GET
 		@Path("/{user_ID}/{year}/{month}")
 		@Produces(MediaType.APPLICATION_JSON)
-		public String viewMonthlyBills(@PathParam("user_ID") String UID, @PathParam("year") int year, @PathParam("month") String month ) {
+		public String viewMonthlyBills(@PathParam("user_ID") String UID, @PathParam("year") int year, @PathParam("month") String month ){
 			Gson gson = new Gson();
 			bills = billService.viewMonthlyBills(UID, year, month);
 			String jsonString  = gson.toJson(bills);
@@ -67,7 +69,7 @@ public class BillController {
 		@DELETE
 		@Path("/Deletebill/{bill_ID}")
 		@Produces(MediaType.TEXT_PLAIN)
-		public String deleteCards(@PathParam("bill_ID") String bill_ID) {
+		public String deleteCards(@PathParam("bill_ID") int bill_ID) {
 			String response = billService.deleteBill(bill_ID);
 			return response;
 		}
@@ -78,9 +80,12 @@ public class BillController {
 		@Path("/Updatebill/{bill_ID}")
 		@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 		@Produces(MediaType.TEXT_PLAIN)
-		public String updateCard(@PathParam("bill_ID") String bill_ID , @FormParam("date_created") String date_created, @FormParam("units") float units
+		public String updateCard(@PathParam("bill_ID") int bill_ID , @FormParam("units") float units
 				,@FormParam("unit_price") float unit_price, @FormParam("charge") float charge) {
-			String output = billService.updateBill(bill_ID, new Bill(date_created, units, unit_price, charge));
+			if(charge == 0) {
+				charge = units * unit_price;
+			}
+			String output = billService.updateBill(bill_ID, new Bill( units, unit_price, charge));
 			return output;
 		}
 }
