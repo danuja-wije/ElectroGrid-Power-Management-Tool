@@ -49,6 +49,7 @@ public class BillServiceImpl implements BillService{
 		}
 	}
 	
+	
 	@Override
 	public String generateBill(Bill bill) {
 		
@@ -62,18 +63,17 @@ public class BillServiceImpl implements BillService{
 			}
 			
 			//Query
-			query = "INSERT INTO `bills` (`user_ID`, `year`, `month`, `units`, `unit_price`, `charge`, `date_created,`)"
-					+ " VALUES (?, ?, ?, ?, ?, ?, ?)";
+			query = "INSERT INTO `bills` (`user_ID`, `year`, `month`, `units`, `unit_price`, `charge`)"
+					+ " VALUES (?, ?, ?, ?, ?, ?)";
 
 			preparedStatement = connection.prepareStatement(query);
 
 			preparedStatement.setString(1, bill.getUser_ID());
 			preparedStatement.setInt(2, bill.getYear());
 			preparedStatement.setString(3, bill.getMonth());
-			preparedStatement.setString(4, bill.getDate_created());
-			preparedStatement.setFloat(5, bill.getUnits());
-			preparedStatement.setFloat(6, bill.getUnit_price());
-			preparedStatement.setFloat(7, bill.getCharge());
+			preparedStatement.setFloat(4, bill.getUnits());
+			preparedStatement.setFloat(5, bill.getUnit_price());
+			preparedStatement.setFloat(6, bill.getCharge());
 			
 			preparedStatement.execute();
 			connection.close();
@@ -83,12 +83,15 @@ public class BillServiceImpl implements BillService{
 			
 			
 		}catch(Exception e) {
-			System.err.print(e.getMessage());
+			output = e.getLocalizedMessage();
+			System.err.print(output);
+			return output;
 		}
 		
 		return output;
 	}
 
+	
 	//Delete
 	@Override
 	public String deleteBill(int bill_ID) {
@@ -121,6 +124,7 @@ public class BillServiceImpl implements BillService{
 		return output;
 	}
 
+	
 
 	//Get all bills
 	@Override
@@ -175,6 +179,7 @@ public class BillServiceImpl implements BillService{
 		
 		return billList;
 	}
+	
 
 	//Get bill by year and month
 	@Override
@@ -225,7 +230,7 @@ public class BillServiceImpl implements BillService{
 		return billList;
 	}
 	
-
+	
 	//Update bill
 	@Override
 	public String updateBill(int bill_ID, Bill bill) {
@@ -242,9 +247,9 @@ public class BillServiceImpl implements BillService{
 
 			preparedStatement = connection.prepareStatement(query);
 
-			preparedStatement.setFloat(2, bill.getUnits());
-			preparedStatement.setFloat(3, bill.getUnit_price());
-			preparedStatement.setFloat(4, bill.getCharge());
+			preparedStatement.setFloat(1, bill.getUnits());
+			preparedStatement.setFloat(2, bill.getUnit_price());
+			preparedStatement.setFloat(3, bill.getCharge());
 			
 			
 			preparedStatement.executeUpdate();
