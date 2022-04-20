@@ -43,7 +43,6 @@ public class CreditCardServiceImpl implements CreditCardService{
 				connection = DriverManager.getConnection(URL,USERNAME,PASSWORD);
 				System.out.println("Successfully Connected");
 			} catch (Exception e) {
-				// TODO: handle exception
 				e.printStackTrace();
 			}
 			return connection;
@@ -82,7 +81,6 @@ public class CreditCardServiceImpl implements CreditCardService{
 			query = "";
 
 		} catch (Exception e) {
-			// TODO: handle exception
 			output = "Error while inserting the credit card";
 			System.err.println(e.getMessage());
 		}
@@ -90,7 +88,7 @@ public class CreditCardServiceImpl implements CreditCardService{
 	}
 
 
-	//View
+	//View Card
 	@Override
 	public ArrayList<CreditCard> viewCards(String UID) {
 		//Card attribute
@@ -125,7 +123,7 @@ public class CreditCardServiceImpl implements CreditCardService{
 				user_ID = resultSet.getString("user_ID");
 				card_number = resultSet.getLong("card_number");
 				cvv = resultSet.getInt("cvv");
-				date = resultSet.getNString("exp_date");
+				date = resultSet.getString("exp_date");
 				name_on_card = resultSet.getString("name_on_card");
 				card_issuer = resultSet.getString("card_issuer");
 				
@@ -141,7 +139,7 @@ public class CreditCardServiceImpl implements CreditCardService{
 	}
 
 	
-	//Delete
+	//Delete Card
 	@Override
 	public String deleteCard(long cardNumber) {
 		//Connection
@@ -174,6 +172,7 @@ public class CreditCardServiceImpl implements CreditCardService{
 	}
 
 
+	//Update Card
 	@Override
 	public String updateCard(long cardNumber, CreditCard card) {
 		try {
@@ -202,7 +201,6 @@ public class CreditCardServiceImpl implements CreditCardService{
 			query = "";
 
 		} catch (Exception e) {
-			// TODO: handle exception
 			output = "Error while updating the credit card";
 			System.err.println(e.getMessage());
 		}
