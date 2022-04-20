@@ -5,6 +5,7 @@ public class Bill {
 	//Attributes
 	private String user_ID;
 	private String bill_ID;
+	private int year;
 	private String month;
 	private String date_created;
 	private float units;
@@ -13,10 +14,11 @@ public class Bill {
 	
 	
 	//Constructor
-	public Bill(String user_ID, String bill_ID, String month, float units, float unit_price, float charge, String date_created) {
+	public Bill(String user_ID, String bill_ID, int year, String month, String date_created, float units, float unit_price, float charge) {
 		super();
 		this.user_ID = user_ID;
 		this.bill_ID = bill_ID;
+		this.year = year;
 		this.month = month;
 		this.units = units;
 		this.unit_price = unit_price;
@@ -24,16 +26,23 @@ public class Bill {
 		this.date_created = date_created;
 	}
 
-	public Bill(String user_ID, String month, float units, float unit_price, float charge, String date_created) {
+	public Bill(String user_ID, int year, String month, String date_created, float units, float unit_price, float charge) {
 		super();
 		this.user_ID = user_ID;
+		this.year = year;
 		this.month = month;
 		this.units = units;
 		this.unit_price = unit_price;
 		this.charge = charge;
 		this.date_created = date_created;
 	}
-	
+
+	public Bill(String date_created, float units, float unit_price, float charge) {
+		this.units = units;
+		this.unit_price = unit_price;
+		this.charge = charge;
+		this.date_created = date_created;
+	}
 
 	//Getters and setters
 	public String getUser_ID() {
@@ -52,6 +61,14 @@ public class Bill {
 		this.bill_ID = bill_ID;
 	}
 
+	public int getYear() {
+		return year;
+	}
+
+	public void setYear(int year) {
+		this.year = year;
+	}
+	
 	public String getMonth() {
 		return month;
 	}
