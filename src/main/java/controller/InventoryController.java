@@ -18,13 +18,33 @@ public class InventoryController {
 	
 	Inventory invObj = new Inventory();
 	
-	//retrive inventory
+	//retrieve inventory items
 	@GET
 	@Path("/") 
 	@Produces(MediaType.TEXT_HTML)
-	public String readItems() 
+	public String readInventory() 
 	{ 
 		return invObj.readInventory(); 
 	}
+	
+	//Retrieve details for a specific inventory  
+	@GET
+	@Path("/Items/{inventoryitemCode}") 
+	@Produces(MediaType.TEXT_HTML) 
+	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+	public String viewSelectInventory(@PathParam("inventoryitemCode") int code){
+				
+		return invObj.retrieveSelectInventory(code);
+	
+	}
+			
+			
+	
+	
+	
+
+
+	
+	
 	
 }
