@@ -19,7 +19,7 @@ import model.CreditCard;
 import service.CreditCardService;
 import service.CreditCardServiceImpl;
 
-@Path("/Payment")
+@Path("/CrecitCard")
 public class CreditCardController {
 
 	//Card service
@@ -30,7 +30,7 @@ public class CreditCardController {
 	
 	//Insert
 	@POST
-	@Path("/Card")
+	@Path("/New")
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	@Produces(MediaType.TEXT_PLAIN)
 	public String insertCard(@FormParam("user_ID") String userID , @FormParam("card_number") long cardNumber, @FormParam("cvv") int cvv
