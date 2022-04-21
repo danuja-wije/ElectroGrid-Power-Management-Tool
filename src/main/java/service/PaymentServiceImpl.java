@@ -62,15 +62,15 @@ public class PaymentServiceImpl implements PaymentService{
 			}
 			
 			//Query
-			query = "INSERT INTO `payments` (`user_ID`, `bill_ID`, `amount`, `payment_number`, `payment_ID`)"
-					+ " VALUES (?, ?, ?, ?, ?)";
+			query = "INSERT INTO `payments` (`user_ID`, `bill_ID`, `amount`, `card_number`)"
+					+ " VALUES (?, ?, ?, ?)";
 
 			preparedStatement = connection.prepareStatement(query);
 
 			preparedStatement.setString(1, payment.getUser_ID());
 			preparedStatement.setInt(2, payment.getBill_ID());
+			preparedStatement.setFloat(3, payment.getAmount());
 			preparedStatement.setLong(4, payment.getCard_number());
-			preparedStatement.setLong(5, payment.getPayment_ID());
 
 			preparedStatement.execute();
 			connection.close();
