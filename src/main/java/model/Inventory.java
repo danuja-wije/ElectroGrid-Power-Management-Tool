@@ -196,7 +196,7 @@ public class Inventory {
 		 return output; 
 	 }
 	 
-	//implement display inventory method for the relevant id
+	//implement display inventory method for the relevant code
 		public String retrieveSelectInventory(int invCode) {
 				
 				String output = "";
@@ -243,7 +243,7 @@ public class Inventory {
 						output += "</table>";							
 				}
 				catch(Exception e) {
-					output = "Occure error while reading products";
+					output = "Occur errors while reading inventory items";
 					System.err.println(e.getMessage()); 
 				}
 				
