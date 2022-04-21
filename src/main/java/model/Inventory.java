@@ -195,4 +195,58 @@ public class Inventory {
 		 } 
 		 return output; 
 	 }
+	 
+	//implement display inventory method for the relevant id
+		public String retrieveSelectInventory(int invCode) {
+				
+				String output = "";
+				try {
+					Connection con =  connect();
+					System.out.print(con);
+					if(con == null) { 
+						return "Error while connecting to the database for reading.";
+						
+					}
+					output = "<table style='border:1px solid black;margin-left:auto;margin-right:auto;'><tr><th>Inventory Code</th><th>InventoryItem Name</th>" +
+							"<th>Stock Quantity</th>" + 
+							"<th>Manufacturing Year</th>" +
+							"<th>Repairing Year</th>" +
+							"</tr>"; 
+			 
+					String query = "select * from inventory where inventoryitemCode=" + invCode; 
+					Statement stmt = con.createStatement(); 
+					ResultSet rs = stmt.executeQuery(query);  
+					
+					
+					// iterate through the rows in the result set
+					while (rs.next()) 
+					{ 
+						String id = Integer.toString(rs.getInt("inventoryitemID")); 
+						String code = rs.getString("inventoryitemCode"); 
+						String name = rs.getString("inventoryitemName"); 
+						String qty = Double.toString(rs.getDouble("stockQty")); 
+						String manufact = rs.getString("manufactYr"); 
+						String repair = rs.getString("latestRepairYr");
+			
+						// Add into the html table
+						output += "<tr><td>" + code + "</td>"; 
+						output += "<td>" + name + "</td>"; 
+						output += "<td>" + qty + "</td>"; 
+						output += "<td>" + manufact + "</td>"; 
+						output += "<td>" + repair + "</td>"; 
+			 
+						// buttons
+						output += "<input name='inventoryitemID' type='hidden' value='" + id 
+												+ "'>" + "</tr>"; 
+					}
+						con.close();
+						output += "</table>";							
+				}
+				catch(Exception e) {
+					output = "Occure error while reading products";
+					System.err.println(e.getMessage()); 
+				}
+				
+				return output;			 
+			}
 }
