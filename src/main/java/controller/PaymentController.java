@@ -28,7 +28,7 @@ public class PaymentController {
 		
 		//Insert
 		@POST
-		@Path("/")
+		@Path("/New")
 		@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 		@Produces(MediaType.TEXT_PLAIN)
 		public String insertPayment(@FormParam("user_ID") String user_ID , @FormParam("bill_ID") int bill_ID, @FormParam("amount") float amount
