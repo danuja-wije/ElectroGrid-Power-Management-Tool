@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 import model.Payment;
 
-public class PaymentServiceImpl {
+public class PaymentServiceImpl implements PaymentService{
 
 	//DB parameters
 	private static final String USERNAME = "root";
@@ -23,7 +23,7 @@ public class PaymentServiceImpl {
 	private static Statement statement = null;
 	private static ResultSet resultSet = null;
 	
-	private static ArrayList<Payment> PaymentList = null;
+	private static ArrayList<Payment> paymentList = null;
 	String output = "";
 	
 	//Payment model
@@ -46,6 +46,98 @@ public class PaymentServiceImpl {
 			}
 			return connection;
 		}
+	}
+	
+	//Insert
+	@Override
+	public String insertPayment(Payment payment) {
+		
+		try {
+			//Connection
+			connection = connect();
+			
+			if(connection == null) {
+				output = "Error connecting to DB";
+				return output;
+			}
+			
+			//Query
+			query = "INSERT INTO `payments` (`user_ID`, `bill_ID`, `amount`, `payment_number`, `payment_ID`)"
+					+ " VALUES (?, ?, ?, ?, ?)";
+
+			preparedStatement = connection.prepareStatement(query);
+
+			preparedStatement.setString(1, payment.getUser_ID());
+			preparedStatement.setInt(2, payment.getBill_ID());
+			preparedStatement.setLong(4, payment.getCard_number());
+			preparedStatement.setLong(5, payment.getPayment_ID());
+
+			preparedStatement.execute();
+			connection.close();
+
+			output = "Inserted Successfully";
+			query = "";
+			
+			
+		}catch(Exception e) {
+			output = e.getLocalizedMessage();
+			System.err.print(output);
+			return output;
+		}
+		
+		return output;
+	}
+	
+	
+
+	@Override
+	public ArrayList<Payment> getPayments(String UID) {
+		//payment attribute
+				 String user_ID  = "";
+				 int bill_ID = 0;
+				 String transaction_date = "";
+				 float amount = 0;
+				 long card_number = 0;
+				 long payment_ID = 0;
+		
+				
+				//Payment List
+				paymentList = new ArrayList<Payment>();
+				
+				//Connection
+				try {
+					connection = connect();
+					
+					if(connection == null) {
+						System.err.println("Error while connecting to the database");
+						return null;
+					}
+					
+					//Query
+					query = "SELECT * FROM payments WHERE user_ID = " + UID;
+					
+					//Execute
+					statement = connection.createStatement();
+					resultSet = statement.executeQuery(query);
+					
+					//Get all results
+					while(resultSet.next()) {
+						user_ID = resultSet.getString("user_ID");
+						bill_ID = resultSet.getInt("bill_ID");
+						transaction_date = resultSet.getString("transaction_date");
+						amount = resultSet.getFloat("amount");
+						card_number = resultSet.getLong("card_number");
+						payment_ID = resultSet.getLong("payment_ID");
+						
+						//Add to list
+						paymentList.add(new Payment(user_ID, bill_ID, transaction_date, amount, card_number, payment_ID));
+					}
+					
+				}catch(Exception e) {
+					System.err.println("Error getting data " + e.getMessage());
+				}
+				
+				return paymentList;
 	}
 	
 }
