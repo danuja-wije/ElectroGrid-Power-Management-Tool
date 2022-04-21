@@ -19,6 +19,13 @@ public class Payment {
 		this.payment_ID = payment_ID;
 	}
 
+	public Payment(String user_ID, int bill_ID, float amount, long card_number) {
+		this.user_ID = user_ID;
+		this.bill_ID = bill_ID;
+		this.amount = amount;
+		this.card_number = card_number;
+	}
+
 	//Getters and Setters
 	public String getUser_ID() {
 		return user_ID;
