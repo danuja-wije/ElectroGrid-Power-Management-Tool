@@ -130,5 +130,68 @@ public class AdminManageServiceImpl implements AdminManageService{
 		return employeeList;
 	}
 	
+	//Update employee
+	@Override
+	public String updateEmployee(String empID, Employee employee) {
+		try {
+			connection  = connect();
+			if (connection == null ) {
+				output = "Error while connectiong to the database";
+				return output;
+			}
+
+			//Query
+			query = "UPDATE employees SET name = ?, email = ?, empType = ? WHERE empID = " + empID;
+
+			preparedStatement = connection.prepareStatement(query);
+
+			preparedStatement.setString(1, employee.getName());
+			preparedStatement.setString(2, employee.getEmail());
+			preparedStatement.setString(3, employee.getEmpType());
+			
+			preparedStatement.executeUpdate();
+
+			connection.close();
+
+			output = "Updated Successfully";
+			query = "";
+
+		} catch (Exception e) {
+			output = "Error while updating the employee";
+			System.err.println(e.getMessage());
+		}
+		return output;
+	}
 	
+	//Delete employee
+	@Override
+	public String deleteEmployee(String empID) {
+		//Connection
+		try {
+			connection = connect();
+			
+			if(connection == null) {
+				output = "Error while connectiong to the database";
+				return output;
+			}
+			
+			//Query
+			query = "DELETE FROM employees WHERE empID = " + empID;
+			statement = connection.createStatement();
+			int del = statement.executeUpdate(query);
+			
+			if(del > 0) {
+				output = "Employee removed";
+			}
+			else {
+				output = "Employee not found";
+			}
+			
+		}catch(Exception e) {
+			output = "Error deleting data " + e.getMessage();
+			System.err.println(output);
+			return output;
+		}
+		return output;
+	}
 }
