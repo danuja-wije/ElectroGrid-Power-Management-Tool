@@ -185,6 +185,51 @@ public class Inventory {
 	}
 	
 	
+	public String updateInventory(String id, String code, String name, String qty, String manufact, String repair){
+		
+	    String output = "";
+
+	    try{
+	    	
+	    	Connection con = connect();
+	           
+	    	if (con == null){
+	    		
+	           return "Error while connecting to the database for updating.";
+	        }
+	           
+	        // create a prepared statement
+
+	        String query = "UPDATE inventory SET invItemCode=?,invItemName=?,stockQty=?,manufactYr=?,latestRepairDate=? WHERE invID=?";
+	        PreparedStatement preparedStmt = con.prepareStatement(query);
+
+	        preparedStmt.setString(1, code);
+	        preparedStmt.setString(2, name);
+	        preparedStmt.setDouble(3, Double.parseDouble(qty));
+	        preparedStmt.setString(4, manufact);
+	        preparedStmt.setString(5, repair);
+	        preparedStmt.setInt(6, Integer.parseInt(id));
+
+	        // execute the statement
+	        preparedStmt.execute();
+	        con.close();
+
+	        output = "Updated successfully";
+	           
+	    }catch(Exception e){
+	    	
+	    	output = "Error while updating the value.";
+			System.err.println(e.getMessage());
+			
+	    }
+	    
+	    return output;
+
+	 }
+	
+	
+	
+	
 	
 	
 	
