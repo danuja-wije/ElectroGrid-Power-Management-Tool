@@ -58,33 +58,43 @@ public class InventoryController {
 	
 	//Update operation
 	@PUT
-	 @Path("/")
-	 @Produces(MediaType.TEXT_PLAIN)
-	 public String updateDoctor(String invData) {
+	@Path("/")
+	@Produces(MediaType.TEXT_PLAIN)
+	public String updateDoctor(String invData) {
 		
-		 //Convert the input string to a JSON object
-		 JsonObject docjObj = new JsonParser().parse(invData).getAsJsonObject();
+		//Convert the input string to a JSON object
+		JsonObject docjObj = new JsonParser().parse(invData).getAsJsonObject();
 		  
 		//Read the values from the JSON object
-		 String id= docjObj.get("invID").getAsString();
-		 String code= docjObj.get("invItemCode").getAsString();
-		 String name= docjObj.get("invItemName").getAsString();
-		 String qty= docjObj.get("stockQty").getAsString();
-		 String manufact = docjObj.get("manufactYr").getAsString();
-		 String repair= docjObj.get("latestRepairDate").getAsString();
+		String id= docjObj.get("invID").getAsString();
+		String code= docjObj.get("invItemCode").getAsString();
+		String name= docjObj.get("invItemName").getAsString();
+		String qty= docjObj.get("stockQty").getAsString();
+		String manufact = docjObj.get("manufactYr").getAsString();
+		String repair= docjObj.get("latestRepairDate").getAsString();
 		  
-		 String output= invObj.updateInventory(id, code,name,qty,manufact,repair);
-		 return output;
-		  	 
-	  }
-			
-			
+		String output= invObj.updateInventory(id, code,name,qty,manufact,repair);
+		
+		return output;
 	
+	}
+	//Tested and verified above Update operation through POSTMAN
 	
-	
-
-
-	
-	
-	
+	@DELETE
+	@Path("/")
+	@Consumes(MediaType.APPLICATION_XML)
+	@Produces(MediaType.TEXT_PLAIN)
+	public String deleteDoctor(String invData){
+		
+	   	//Convert the input string to an XML document
+	   	Document doc = Jsoup.parse(invData, "", Parser.xmlParser());
+	   			
+	   	//Read the value from the element <itemID>
+	   	String id = doc.select("invID").text();
+	   	String output = invObj.deleteInventory(id);
+	   			
+	   	return output;
+	}
+	//Tested and verified above Delete operation through POSTMAN
+				
 }
