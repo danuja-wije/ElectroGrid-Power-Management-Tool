@@ -18,25 +18,42 @@ public class InventoryController {
 	
 	Inventory invObj = new Inventory();
 	
-	//retrieve inventory items
+	//View(retrieve) all inventory records
 	@GET
 	@Path("/") 
 	@Produces(MediaType.TEXT_HTML)
-	public String readInventory() 
-	{ 
+	public String readInventory() { 
+		
 		return invObj.readInventory(); 
 	}
+	//Tested and verified above View all operation through POSTMAN
 	
-	//Retrieve details for a specific inventory  
+	//View a record for a specific id 
 	@GET
-	@Path("/Items/{inventoryitemCode}") 
+	@Path("/{invID}") 
 	@Produces(MediaType.TEXT_HTML) 
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-	public String viewSelectInventory(@PathParam("inventoryitemCode") int code){
-				
-		return invObj.retrieveSelectInventory(code);
-	
+	public String viewSelectCart(@PathParam("invID") int invID){
+			
+		return invObj.readspecificInventory(invID);
 	}
+	//Tested and verified above View a specific record operation through POSTMAN
+	
+	//Create(Insert) operation
+	@POST
+	@Path("/")
+	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+	@Produces(MediaType.TEXT_PLAIN)
+	public String insertInventory( @FormParam("invItemCode") String code,
+								  @FormParam("invItemName") String name,
+								  @FormParam("stockQty") String qty,
+								  @FormParam("manufactYr") String manufact,
+								  @FormParam("latestRepairDate") String repair){
+		
+			String output = invObj.insertInventory(code, name, qty, manufact, repair);
+			return output;
+	}
+	//Tested and verified above Create operation through POSTMAN
 			
 			
 	
