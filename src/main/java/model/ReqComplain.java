@@ -1,13 +1,13 @@
 package model;
 
-public class RequestComplain {
+public class ReqComplain {
 	private String id;
 	private String cutomerID;
 	private String type;
 	private String description;
 	
 	
-	public RequestComplain(String id, String cutomerID, String type, String description) {
+	public ReqComplain(String id, String cutomerID, String type, String description) {
 		super();
 		this.id = id;
 		this.cutomerID = cutomerID;
