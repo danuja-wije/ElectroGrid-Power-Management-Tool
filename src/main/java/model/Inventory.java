@@ -10,7 +10,6 @@ public class Inventory {
 		Connection con = null;
 		
 		try{
-			
 			Class.forName("com.mysql.jdbc.Driver");
 			con= DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/electrogriddb","root", "");
 	       
@@ -30,11 +29,9 @@ public class Inventory {
 	    String output = "";
 		
 		try{
-			
 			Connection con = connect();
 	        
 			if (con == null){
-				
 				return "Error while connecting to the database";
 	        }
 	        
@@ -58,7 +55,6 @@ public class Inventory {
 	        output = "Inserted successfully";
 
 		}catch(Exception e){
-			
 			output = "Error while inserting";
 	        System.err.println(e.getMessage());
 		}
@@ -73,7 +69,6 @@ public class Inventory {
 		String output = "";
 		
 		try{
-			
 			Connection con = connect();
 				
 			if (con == null){
@@ -92,7 +87,6 @@ public class Inventory {
 				
 			// iterate through the rows in the result set
 			while (rs.next()){
-				
 				String id = Integer.toString(rs.getInt("invID"));
 				String code = rs.getString("invItemCode");
 				String name = rs.getString("invItemName");
@@ -116,7 +110,6 @@ public class Inventory {
 			output += "</table>";
 			
 		}catch (Exception e){
-			
 			output = "Error while reading the values.";
 			System.err.println(e.getMessage());
 			
@@ -131,11 +124,9 @@ public class Inventory {
 		String output = "";
 		
 		try{
-			
 			Connection con = connect();
 			
 			if (con == null){
-				
 				return "Error while connecting to the database for reading."; 
 			}
 
@@ -151,7 +142,6 @@ public class Inventory {
 				
 			// iterate through the rows in the result set
 			while (rs.next()){
-				
 				String id = Integer.toString(rs.getInt("invID"));
 				String code = rs.getString("invItemCode");
 				String name = rs.getString("invItemName");
@@ -175,7 +165,6 @@ public class Inventory {
 			output += "</table>";
 			
 		}catch (Exception e){
-			
 			output = "Error while reading the values.";
 			System.err.println(e.getMessage());
 			
@@ -184,17 +173,15 @@ public class Inventory {
 		return output;
 	}
 	
-	
+	//Update a record 
 	public String updateInventory(String id, String code, String name, String qty, String manufact, String repair){
 		
 	    String output = "";
 
 	    try{
-	    	
 	    	Connection con = connect();
 	           
 	    	if (con == null){
-	    		
 	           return "Error while connecting to the database for updating.";
 	        }
 	           
@@ -217,7 +204,6 @@ public class Inventory {
 	        output = "Updated successfully";
 	           
 	    }catch(Exception e){
-	    	
 	    	output = "Error while updating the value.";
 			System.err.println(e.getMessage());
 			
@@ -225,17 +211,37 @@ public class Inventory {
 	    
 	    return output;
 
-	 }
+	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	//Delete  a record
+	public String deleteInventory(String id){
+		
+		String output = "";
+
+		try{
+			Connection con = connect();
+			
+			if (con == null){
+				return "Error while connecting to the database for deleting.";
+	        }
+
+	        // create a prepared statement
+	        String query = "delete from inventory where invID=?";
+	        PreparedStatement preparedStmt = con.prepareStatement(query);
+	        // binding values
+	        preparedStmt.setInt(1, Integer.parseInt(id));
+	        // execute the statement
+	        preparedStmt.execute();
+	        con.close();
+
+	        output = "Deleted successfully";
+
+
+		}catch (Exception e){
+			output = "Error while deleting the value.";
+			System.err.println(e.getMessage());
+		}
+
+		return output;
+	}	
 }
