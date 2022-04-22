@@ -48,6 +48,42 @@ public class AdminManageServiceImpl implements AdminManageService{
 		}
 	}
 	
+	//Insert employee
+	@Override
+	public String insertEmployee(Employee employee) {
+		
+		try {
+			connection  = connect();
+			if (connection == null ) {
+				output = "Error while connectiong to the database";
+				return output;
+			}
+
+			//Query
+			query = "INSERT INTO `employees` (`empID`, `name`, `email`, `empType`)"
+					+ " VALUES (?, ?, ?, ?)";
+
+			preparedStatement = connection.prepareStatement(query);
+
+			preparedStatement.setString(1, employee.getEmpID());
+			preparedStatement.setString(2, employee.getName());
+			preparedStatement.setString(3, employee.getEmail());
+			preparedStatement.setString(4, employee.getEmpType());
+			
+			preparedStatement.execute();
+
+			connection.close();
+
+			output = "Inserted Successfully";
+			query = "";
+
+		} catch (Exception e) {
+			output = "Error while inserting the employee";
+			System.err.println(e.getMessage());
+		}
+		return output;
+	}
+	
 	//View Employees
 	@Override
 	public ArrayList<Employee> viewEmployees(String UID) {
@@ -93,4 +129,6 @@ public class AdminManageServiceImpl implements AdminManageService{
 		
 		return employeeList;
 	}
+	
+	
 }
