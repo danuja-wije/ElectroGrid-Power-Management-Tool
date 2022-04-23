@@ -4,27 +4,24 @@ import java.util.List;
 
 public class Interruption {
 	private int id;
-	private String entType;
+	private String inType;
 	private String title;
 	private String description;
 	private String interruptionStartDate;
 	private String interruptionEndDate;
-	private String startTime;
-	private String endTime;
 	private List<Employee>efectedList;
 	private String approval;
+	private String timeStamp;
 	
-	public Interruption(int id, String entType, String title, String description, String interruptionStartDate,
-			String interruptionEndDate, String startTime, String endTime, List<Employee> efectedList, String approval) {
+	public Interruption(String inType, String title, String description, String interruptionStartDate,
+			String interruptionEndDate, List<Employee> efectedList, String approval) {
 		super();
-		this.id = id;
-		this.entType = entType;
+		this.inType = inType;
 		this.title = title;
 		this.description = description;
 		this.interruptionStartDate = interruptionStartDate;
 		this.interruptionEndDate = interruptionEndDate;
-		this.startTime = startTime;
-		this.endTime = endTime;
+
 		this.efectedList = efectedList;
 		this.approval = approval;
 	}
@@ -33,8 +30,8 @@ public class Interruption {
 		return id;
 	}
 
-	public String getEntType() {
-		return entType;
+	public String getInType() {
+		return inType;
 	}
 
 	public String getTitle() {
@@ -53,20 +50,20 @@ public class Interruption {
 		return interruptionEndDate;
 	}
 
-	public String getStartTime() {
-		return startTime;
-	}
-
-	public String getEndTime() {
-		return endTime;
-	}
-
 	public List<Employee> getEfectedList() {
 		return efectedList;
 	}
 
 	public String getApproval() {
 		return approval;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public void setTimeStamp(String timeStamp) {
+		this.timeStamp = timeStamp;
 	}
 	
 }
