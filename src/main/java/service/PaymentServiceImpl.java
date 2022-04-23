@@ -14,7 +14,7 @@ public class PaymentServiceImpl implements PaymentService{
 
 	//DB parameters
 	private static final String USERNAME = "root";
-	private static final String URL = "jdbc:mysql://127.0.0.1:3306/electrogriddb";
+	private static final String URL = "jdbc:mysql://127.0.0.1:3306/electrogridpaymentdb";
 	private static final String DRIVER = "com.mysql.cj.jdbc.Driver";
 	private static final String PASSWORD = "";
 	private static Connection connection = null;
@@ -47,6 +47,7 @@ public class PaymentServiceImpl implements PaymentService{
 			return connection;
 		}
 	}
+	
 	
 	//Insert
 	@Override
@@ -139,5 +140,4 @@ public class PaymentServiceImpl implements PaymentService{
 				
 				return paymentList;
 	}
-	
 }
