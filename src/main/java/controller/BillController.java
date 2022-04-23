@@ -33,10 +33,10 @@ public class BillController {
 		@Path("/Generatebill")
 		@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 		@Produces(MediaType.TEXT_PLAIN)
-		public String insertCard(@FormParam("user_ID") String userID , @FormParam("year") int year, @FormParam("month") String month
+		public String insertCard(@FormParam("user_ID") String userID , @FormParam("account_ID") String account_ID, @FormParam("year") int year, @FormParam("month") String month
 			,String date_created, @FormParam("units") float units, @FormParam("unit_price") float unit_price) {
 			float charge = units * unit_price;
-			String output = billService.generateBill(new Bill(userID, year, month, units, unit_price, charge));
+			String output = billService.generateBill(new Bill(userID, account_ID, year, month, units, unit_price, charge));
 			return output;
 		}
 		
@@ -45,9 +45,9 @@ public class BillController {
 		@GET
 		@Path("/{user_ID}")
 		@Produces(MediaType.APPLICATION_JSON)
-		public String viewAllBills(@PathParam("user_ID") String UID) {
+		public String viewAllBills(@PathParam("user_ID") String UID, @PathParam("account_ID") String AccID) {
 			Gson gson = new Gson();
-			bills = billService.viewAllBills(UID);
+			bills = billService.viewAllBills(UID, AccID);
 			String jsonString  = gson.toJson(bills);
 			return jsonString;
 		}
