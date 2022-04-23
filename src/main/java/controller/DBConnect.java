@@ -5,9 +5,9 @@ import java.sql.DriverManager;
 
 public class DBConnect {
 
-		private static String URL = "jdbc:mysql://localhost:3306/company";
+		private static String URL = "jdbc:mysql://localhost:3306/consumerDB";
 		private static String USERNAME ="root";
-		private static String PASSWORD = "Nmhs1055330+";
+		private static String PASSWORD = "";
 		private static String DRIVER = "com.mysql.jdbc.Driver";
 		private static Connection con;
 		
@@ -15,7 +15,7 @@ public class DBConnect {
 			
 			try {
 				
-				Class.forName("com.mysql.jdbc.Driver");
+				Class.forName(DRIVER);
 				
 				con = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 				System.out.println("Successfully Connected...");
