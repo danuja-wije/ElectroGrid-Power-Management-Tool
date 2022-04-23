@@ -1,5 +1,6 @@
 package service;
 
+import java.nio.file.FileSystemAlreadyExistsException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -53,11 +54,13 @@ public class TaskServiceImpl implements TaskService {
 		String status = "";
 		String created ="";
 		String lastUpdate ="";
+		String customerID = "";
 		
 		//worker list
 		worker_list = new ArrayList<Worker>();
 		//worker attribute
 		String workerID = "";
+		String role = "";
 		try {
 			connection = connect();
 
@@ -80,6 +83,8 @@ public class TaskServiceImpl implements TaskService {
 				status = resultSet.getString("status");
 				created =resultSet.getString("createTime");
 				lastUpdate = resultSet.getString("lastUpdate");
+				customerID = resultSet.getString("customerID");
+				
 			}
 
 			
@@ -88,12 +93,13 @@ public class TaskServiceImpl implements TaskService {
 
 			while(worker_rs.next()) {
 				workerID = worker_rs.getString("workerID");
+				role = worker_rs.getString("role");
 				
-				worker = new Worker(taskID, workerID);
+				worker = new Worker(taskID, workerID,role);
 				worker_list.add(worker);
 			}
 			//create task object
-			task = new Task(taskID, title, desc, query_workers, worker_list, handleBy, created, lastUpdate);
+			task = new Task(taskID, title, desc,customerID, worker_list, handleBy, created, lastUpdate);
 			output="Sucess";
 
 
@@ -140,7 +146,7 @@ public class TaskServiceImpl implements TaskService {
 		}
 		return output;
 	}
-	public String insertWorkers(String taskID,String workerID) {
+	public String insertWorkers(Worker worker) {
 		String output = "";
 		try {
 			connection  = connect();
@@ -149,12 +155,13 @@ public class TaskServiceImpl implements TaskService {
 				return output;
 			}
 
-			query = "INSERT INTO `task_workers` (`taskID`, `workerID`) VALUES (?, ?)";
+			query = "INSERT INTO `task_workers` (`taskID`, `workerID`,`role`) VALUES (?, ? , ?)";
 
 			preparedStatement = connection.prepareStatement(query);
 
-			preparedStatement.setString(1, taskID);
-			preparedStatement.setString(2, workerID);
+			preparedStatement.setInt(1, worker.getTaskID());
+			preparedStatement.setString(2, worker.getWorkerID());
+			preparedStatement.setString(3, worker.getRole());
 
 			preparedStatement.execute();
 
@@ -168,6 +175,74 @@ public class TaskServiceImpl implements TaskService {
 			output = "Error while inserting the workers";
 			System.err.println(e.getMessage());
 		}
+		return output;
+	}
+	@Override
+	public String updateWorker(Worker worker) {
+		// TODO Auto-generated method stub
+		String output = "";
+		
+		try {
+			connection = connect();
+			
+			if (connection == null) {
+				output = "Error while connectiong to the database for Updating";
+				return output;
+			}
+			
+			query = "UPDATE `task_workers` SET `role` = ? WHERE `taskID` = ? AND `workerID` = ?";
+
+			preparedStatement = connection.prepareStatement(query);
+
+			preparedStatement.setString(1, worker.getRole());
+			preparedStatement.setInt(2, worker.getTaskID());
+			preparedStatement.setString(3,worker.getWorkerID());
+
+			preparedStatement.execute();
+
+			connection.close();
+
+			output = "Update Successfully";
+			query = "";
+		} catch (Exception e) {
+			// TODO: handle exception
+			output = "Error while inserting the workers";
+			System.err.println(e.getMessage());
+		}
+
+		return output;
+	}
+	@Override
+	public String deleteWorler(int taskID, String workerID) {
+		// TODO Auto-generated method stub
+		// TODO Auto-generated method stub
+		String output = "";
+
+		try {
+			if (connection == null) {
+				output = "Error while connectiong to the database for Inserting";
+				return output;
+			}
+
+			query = "DELETE FROM `task_workers` WHERE `task_workers`.`taskID` = ? AND `task_workers`.`workerID` = ?";
+
+			preparedStatement = connection.prepareStatement(query);
+
+			preparedStatement.setInt(1, taskID);
+			preparedStatement.setString(2,workerID);
+
+			preparedStatement.execute();
+
+			connection.close();
+
+			output = "Delete Successfully";
+			query = "";
+		} catch (Exception e) {
+			// TODO: handle exception
+			output = "Error while inserting the workers";
+			System.err.println(e.getMessage());
+		}
+
 		return output;
 	}
 }
