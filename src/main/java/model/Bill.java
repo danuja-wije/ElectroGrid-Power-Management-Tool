@@ -4,6 +4,7 @@ public class Bill {
 	
 	//Attributes
 	private String user_ID;
+	private String account_ID;
 	private int bill_ID;
 	private int year;
 	private String month;
@@ -14,9 +15,10 @@ public class Bill {
 	
 	
 	//Constructor
-	public Bill(String user_ID, int bill_ID, int year, String month, float units, float unit_price, float charge) {
+	public Bill(String user_ID, String account_ID, int bill_ID, int year, String month, float units, float unit_price, float charge) {
 		super();
 		this.user_ID = user_ID;
+		this.account_ID = account_ID;
 		this.bill_ID = bill_ID;
 		this.year = year;
 		this.month = month;
@@ -25,9 +27,10 @@ public class Bill {
 		this.charge = charge;
 	}
 	
-	public Bill(String user_ID, int year, String month, float units, float unit_price, float charge) {
+	public Bill(String user_ID, String account_ID, int year, String month, float units, float unit_price, float charge) {
 		super();
 		this.user_ID = user_ID;
+		this.account_ID = account_ID;
 		this.year = year;
 		this.month = month;
 		this.units = units;
@@ -41,17 +44,26 @@ public class Bill {
 		this.charge = charge;
 	}
 
-	public Bill(String user_ID, int bill_ID, int year, String month, String date_created, float units,
-			float unit_price, float charge) {
-			super();
-			this.user_ID = user_ID;
-			this.year = year;
-			this.month = month;
-			this.units = units;
-			this.unit_price = unit_price;
-			this.charge = charge;
-			this.date_created = date_created;
+	public Bill(int year, String month, String date_created, float units, float unit_price, float charge) {
+		super();
+		this.year = year;
+		this.month = month;
+		this.units = units;
+		this.unit_price = unit_price;
+		this.charge = charge;
+		this.date_created = date_created;
 	}
+
+	public Bill(int bill_ID, int year, String month, String date_created, float units,
+			float unit_price, float charge) {
+		super();
+		this.year = year;
+		this.month = month;
+		this.units = units;
+		this.unit_price = unit_price;
+		this.charge = charge;
+		this.date_created = date_created;
+}
 
 	//Getters and setters
 	public String getUser_ID() {
@@ -118,4 +130,13 @@ public class Bill {
 		this.date_created = date_created;
 	}
 
+	public String getAccount_ID() {
+		return account_ID;
+	}
+
+	public void setAccount_ID(String account_ID) {
+		this.account_ID = account_ID;
+	}
+
+	
 }

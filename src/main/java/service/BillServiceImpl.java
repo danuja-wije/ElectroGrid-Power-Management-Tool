@@ -15,7 +15,7 @@ public class BillServiceImpl implements BillService{
 
 	//DB parameters
 	private static final String USERNAME = "root";
-	private static final String URL = "jdbc:mysql://127.0.0.1:3306/electrogriddb";
+	private static final String URL = "jdbc:mysql://127.0.0.1:3306/electrogridpaymentdb";
 	private static final String DRIVER = "com.mysql.cj.jdbc.Driver";
 	private static final String PASSWORD = "";
 	private static Connection connection = null;
@@ -128,7 +128,7 @@ public class BillServiceImpl implements BillService{
 
 	//Get all bills
 	@Override
-	public ArrayList<Bill> viewAllBills(String user_ID) {
+	public ArrayList<Bill> viewAllBills(String user_ID, String account_ID) {
 		
 		//Bill attribute
 		int bill_ID = 0;
@@ -153,7 +153,7 @@ public class BillServiceImpl implements BillService{
 			}
 			
 			//Query
-			query = "SELECT * FROM bills WHERE user_ID = " + user_ID;
+			query = "SELECT * FROM bills WHERE user_ID = " + user_ID + "AND account_ID = " + account_ID;
 			
 			//Execute
 			statement = connection.createStatement();
@@ -170,7 +170,7 @@ public class BillServiceImpl implements BillService{
 				charge = resultSet.getFloat("charge");
 				
 				//Add to list
-				billList.add(new Bill(user_ID, bill_ID, year, month, date_created, units, unit_price, charge ));
+				billList.add(new Bill(year, month, date_created, units, unit_price, charge ));
 			}
 			
 		}catch(Exception e) {
@@ -220,7 +220,7 @@ public class BillServiceImpl implements BillService{
 				charge = resultSet.getFloat("charge");
 				
 				//Add to list
-				billList.add(new Bill(user_ID, bill_ID, year, month, date_created, units, unit_price, charge ));
+				billList.add(new Bill(bill_ID, year, month, date_created, units, unit_price, charge ));
 			}
 			
 		}catch(Exception e) {

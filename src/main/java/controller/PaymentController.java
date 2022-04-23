@@ -32,7 +32,7 @@ public class PaymentController {
 		@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 		@Produces(MediaType.TEXT_PLAIN)
 		public String insertPayment(@FormParam("user_ID") String user_ID , @FormParam("bill_ID") int bill_ID, @FormParam("amount") float amount
-				,@FormParam("card_number") long card_number, @FormParam("payment_ID") long payment_ID) {
+				,@FormParam("card_number") long card_number) {
 			String output = paymentService.insertPayment(new Payment(
 					user_ID, bill_ID, amount, card_number));
 			return output;
