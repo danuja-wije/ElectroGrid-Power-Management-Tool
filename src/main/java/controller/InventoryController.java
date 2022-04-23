@@ -1,100 +1,96 @@
 package controller;
 
-//For REST Service
-import javax.ws.rs.*; 
-import javax.ws.rs.core.MediaType; 
+import java.util.ArrayList;
 
-//For JSON
-import com.google.gson.*;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.FormParam;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+
+
+import com.google.gson.Gson;
 
 import model.Inventory;
+import service.InventoryService;
+import service.InventoryServiceImpl;
 
-//For XML
-import org.jsoup.*; 
-import org.jsoup.parser.*; 
-import org.jsoup.nodes.Document; 
-
-@Path("/Inventory") 
+@Path("/Inventory")
 public class InventoryController {
 	
-	Inventory invObj = new Inventory();
+	InventoryService invService = new InventoryServiceImpl();
 	
-	//View(retrieve) all inventory records
-	@GET
-	@Path("/") 
-	@Produces(MediaType.TEXT_HTML)
-	public String readInventory() { 
-		
-		return invObj.readInventory(); 
-	}
-	//Tested and verified above View all operation through POSTMAN
+	ArrayList<Inventory> invObjs = new ArrayList<>();
 	
-	//View a record for a specific id 
-	@GET
-	@Path("/{invID}") 
-	@Produces(MediaType.TEXT_HTML) 
-	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-	public String viewSelectCart(@PathParam("invID") int invID){
-			
-		return invObj.readspecificInventory(invID);
-	}
-	//Tested and verified above View a specific record operation through POSTMAN
-	
-	//Create(Insert) operation
+	//Insert 
 	@POST
-	@Path("/")
+	@Path("/Insert")
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	@Produces(MediaType.TEXT_PLAIN)
-	public String insertInventory( @FormParam("invItemCode") String code,
-								  @FormParam("invItemName") String name,
-								  @FormParam("stockQty") String qty,
-								  @FormParam("manufactYr") String manufact,
-								  @FormParam("latestRepairDate") String repair){
+	public String createInventory( @FormParam("invID") int id,@FormParam("invItemCode") String code,@FormParam("invItemName") String name,
+								@FormParam("stockQty") int qty, @FormParam("manufactYr") String manufact, @FormParam("latestRepairDate") String repair,
+								  @FormParam("createdTime") String created, @FormParam("updatedTime") String updated){
 		
-			String output = invObj.insertInventory(code, name, qty, manufact, repair);
+			String output = invService.insertInventory(new Inventory(id,code,name,qty,manufact,repair,created,updated));
 			return output;
 	}
-	//Tested and verified above Create operation through POSTMAN
 	
-	//Update operation
+	
+	//View a specific record
+	@GET
+	@Path("/View/{invID}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String viewSpecificInventory(@PathParam("invID") int invID) {
+		Gson gson = new Gson();
+		invObjs = invService.readInventory(invID);
+		String jsonString  = gson.toJson(invObjs);
+		return jsonString;
+		//return invService.readInventory(invID);
+	}
+	
+	//View all records
+	@GET
+	@Path("/View")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String viewAllInventory() {
+		Gson gson = new Gson();
+		invObjs = invService.readInventory();
+		String jsonString  = gson.toJson(invObjs);
+		return jsonString;
+		//return invService.readInventory();
+	}
+	
+	//Update
 	@PUT
-	@Path("/")
+	@Path("/Update/{invID}")
+	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	@Produces(MediaType.TEXT_PLAIN)
-	public String updateDoctor(String invData) {
+	public String editInventory(@PathParam("invID") int invID , 
+							@FormParam("invItemCode") String code,
+							@FormParam("invItemName") String name,
+							@FormParam("stockQty") int qty,
+							@FormParam("manufactYr") String manufact,
+							@FormParam("latestRepairDate") String repair,
+							@FormParam("createdTime") String created,
+							@FormParam("updatedTime") String updated) {
 		
-		//Convert the input string to a JSON object
-		JsonObject docjObj = new JsonParser().parse(invData).getAsJsonObject();
-		  
-		//Read the values from the JSON object
-		String id= docjObj.get("invID").getAsString();
-		String code= docjObj.get("invItemCode").getAsString();
-		String name= docjObj.get("invItemName").getAsString();
-		String qty= docjObj.get("stockQty").getAsString();
-		String manufact = docjObj.get("manufactYr").getAsString();
-		String repair= docjObj.get("latestRepairDate").getAsString();
-		  
-		String output= invObj.updateInventory(id, code,name,qty,manufact,repair);
-		
+		String output = invService.updateInventory(invID, new Inventory(invID,code,name,qty,manufact,repair,created,updated));
 		return output;
-	
 	}
-	//Tested and verified above Update operation through POSTMAN
 	
+	//Delete
 	@DELETE
-	@Path("/")
-	@Consumes(MediaType.APPLICATION_XML)
+	@Path("/Delete/{invID}")
 	@Produces(MediaType.TEXT_PLAIN)
-	public String deleteDoctor(String invData){
-		
-	   	//Convert the input string to an XML document
-	   	Document doc = Jsoup.parse(invData, "", Parser.xmlParser());
-	   			
-	   	//Read the value from the element <itemID>
-	   	String id = doc.select("invID").text();
-	   	String output = invObj.deleteInventory(id);
-	   			
-	   	return output;
+	public String removeInventory(@PathParam("invID") int invID) {
+		String response = invService.deleteInventory(invID);
+		return response;
 	}
-	//Tested and verified above Delete operation through POSTMAN
-				
+	
+			
 }
