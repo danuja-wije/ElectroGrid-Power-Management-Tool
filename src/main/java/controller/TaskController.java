@@ -10,6 +10,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import model.Task;
+import model.Worker;
 import service.TaskService;
 import service.TaskServiceImpl;
 
@@ -28,6 +29,7 @@ import org.jsoup.nodes.Document;
 public class TaskController {
 	TaskService taskService = new TaskServiceImpl();
 	Task task = null;
+	Worker worker = null;
 	@GET
 	@Path("/{taskID}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -43,19 +45,35 @@ public class TaskController {
 	@Path("/Worker")
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	@Produces(MediaType.TEXT_PLAIN)
-	public String insertWorker(@FormParam("taskID") String taskID , @FormParam("workerID") String workerID) {
+	public String insertWorker(@FormParam("taskID") int taskID , @FormParam("workerID") String workerID,@FormParam("role") String role) {
 		System.out.println("Task ID :"+taskID);
 		System.out.println("Worker ID :"+workerID);
-		String output = taskService.insertWorkers(taskID, workerID);
+		worker = new Worker(taskID,workerID,role);
+		String output = taskService.insertWorkers(worker);
 		return output;
 	}
 	
-//	@POST
-//	@Path("/")
-//	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-//	@Produces(MediaType.TEXT_PLAIN)
-//	public String insertTask(@FormParam("title") String title,@FormParam("description") String description,@FormParam("")) {
-//		
-//	}
-//	
+	@PUT
+	@Path("/Worker")
+	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+	@Produces(MediaType.TEXT_PLAIN)
+	public String updateWorker(@FormParam("taskID") int taskID , @FormParam("workerID") String workerID,@FormParam("role") String role) {
+		System.out.println("Task ID :"+taskID);
+		System.out.println("Worker ID :"+workerID);
+		System.out.println("Role :"+role);
+		worker = new Worker(taskID,workerID,role);
+		String output = taskService.updateWorker(worker);
+		return output;
+	}
+	
+	@DELETE
+	@Path("/Worker")
+	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+	@Produces(MediaType.TEXT_PLAIN)
+	public String deleteWorker(@FormParam("taskID") int taskID , @FormParam("workerID") String workerID) {
+		System.out.println("Task ID :"+taskID);
+		System.out.println("Worker ID :"+workerID);
+		String output = taskService.deleteWorler(taskID, workerID);
+		return output;
+	}
 }
