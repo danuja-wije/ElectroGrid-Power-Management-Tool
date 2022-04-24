@@ -6,7 +6,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import model.Consumer;;
+import model.Consumer;
+import controller.DBConneect;
 
 public class ProfileService {
 
@@ -16,13 +17,14 @@ public class ProfileService {
 	private static Statement stat = null;
 	private static ResultSet rs = null;
 	
+	//Read Consumer Profile Data
 	public static List<Consumer> viewProfile(String userName){
 		
 		ArrayList<Consumer> consumer = new ArrayList<>();
 		
 		try {
 			
-			con = controller.DBConneect.getConnection();
+			con = DBConneect.getConnection();
 			stat = con.createStatement();
 			
 			//SQL Query			
@@ -49,4 +51,29 @@ public class ProfileService {
 		}
 		return consumer;
 	}
+	
+	//Insert Consumer Profile Details
+	public static boolean insertProfileDetails(String name, String address, String mobile, String nic, String email, String username, String  password) {
+	    
+    	boolean isSuccess = false;
+    	
+    	try {
+    		con = DBConneect.getConnection();
+    		stat = con.createStatement();
+    	    String sql = "insert into consumer values (0, '"+name+"', '"+address+"', '"+mobile+"', '"+nic+"','"+email+"','"+username+"', 'pending', '"+password+"')";
+    		int rs = stat.executeUpdate(sql);
+    		
+    		if(rs > 0) {
+    			isSuccess = true;
+    		} else {
+    			isSuccess = false;
+    		}
+    		
+    	}
+    	catch (Exception e) {
+    		e.printStackTrace();
+    	}
+ 	
+    	return isSuccess;
+    }
 }
