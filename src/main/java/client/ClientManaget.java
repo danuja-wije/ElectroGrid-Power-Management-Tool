@@ -6,8 +6,33 @@ import com.sun.jersey.api.client.WebResource;
 
 public class ClientManaget {
 	
-	
-	Client client = ClientBuilder.newClient();
-	
-	String result = client.target("http://localhost:8080/Electro_Grid_Power_App/Validation/Login/Validate").request().get(String.class);
+	public static void main(String[] args) {
+
+		try {
+
+			Client client = Client.create();
+
+			WebResource webResource = client
+			   .resource("http://localhost:8080/Electro_Grid_Power_App/Validation/Login/Validate");
+
+			//String input = "{\"singer\":\"Metallica\",\"title\":\"Fade To Black\"}";
+
+			ClientResponse response = webResource.type("text/plain").get(ClientResponse.class);
+
+			if (response.getStatus() != 201) {
+				throw new RuntimeException("Failed : HTTP error code : "
+				     + response.getStatus());
+			}
+
+			System.out.println("Output from Server .... \n");
+			String output = response.getEntity(String.class);
+			System.out.println(output);
+
+		  } catch (Exception e) {
+
+			e.printStackTrace();
+
+		  }
+
+		}
 }
