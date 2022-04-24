@@ -16,12 +16,12 @@ public class LoginController {
 	@GET
 	@Path("/Validate")
 	@Produces(MediaType.TEXT_PLAIN)
-	public boolean checkLogin(@HeaderParam("Authorization") String auth) {
+	public String checkLogin(@HeaderParam("Authorization") String auth) {
 		
 		if(loginService.isAuthenticated(auth)) {
-			return true;
+			return "True";
 		}else {
-			return false;
+			return "False";
 		}
 	}
 }
