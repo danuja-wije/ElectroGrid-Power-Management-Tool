@@ -7,15 +7,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-
 import model.Bill;
-import model.CreditCard;
 
-public class BillServiceImpl implements BillService{
+public class BillServiceImpl implements BillService{ 
 
 	//DB parameters
 	private static final String USERNAME = "root";
-	private static final String URL = "jdbc:mysql://127.0.0.1:3306/electrogriddb";
+	private static final String URL = "jdbc:mysql://127.0.0.1:3306/consumerdb";
 	private static final String DRIVER = "com.mysql.cj.jdbc.Driver";
 	private static final String PASSWORD = "";
 	private static Connection connection = null;
@@ -23,14 +21,11 @@ public class BillServiceImpl implements BillService{
 	private static PreparedStatement preparedStatement = null;
 	private static Statement statement = null;
 	private static ResultSet resultSet = null;
-	
+
 	private static ArrayList<Bill> billList = null;
 	String output = "";
-	
-	//Bill model
-	private static Bill bill;
-	
-	
+
+
 	//Connection
 	private Connection connect() throws SQLException {
 		if (connection != null && !connection.isClosed()) {
@@ -48,20 +43,20 @@ public class BillServiceImpl implements BillService{
 			return connection;
 		}
 	}
-	
+
 	//Insert
 	@Override
 	public String generateBill(Bill bill) {
-		
+
 		try {
 			//Connection
 			connection = connect();
-			
+
 			if(connection == null) {
 				output = "Error connecting to DB";
 				return output;
 			}
-			
+
 			//Query
 			query = "INSERT INTO `bills` (`user_ID`, `account_ID`, `year`, `month`, `units`, `unit_price`, `charge`)"
 					+ " VALUES (?, ?, ?, ?, ?, ?, ?)";
@@ -75,48 +70,48 @@ public class BillServiceImpl implements BillService{
 			preparedStatement.setFloat(5, bill.getUnits());
 			preparedStatement.setFloat(6, bill.getUnit_price());
 			preparedStatement.setFloat(7, bill.getCharge());
-			
+
 			preparedStatement.execute();
 			connection.close();
 
 			output = "Inserted Successfully";
 			query = "";
-			
-			
+
+
 		}catch(Exception e) {
 			output = e.getLocalizedMessage();
 			System.err.print(output);
 			return output;
 		}
-		
+
 		return output;
 	}
 
-	
+
 	//Delete
 	@Override
 	public String deleteBill(int bill_ID) {
 		//Connection
 		try {
 			connection = connect();
-			
+
 			if(connection == null) {
 				output = "Error while connectiong to the database";
 				return output;
 			}
-			
+
 			//Query
 			query = "DELETE FROM bills WHERE bill_ID = " + bill_ID;
 			statement = connection.createStatement();
 			int del = statement.executeUpdate(query);
-			
+
 			if(del > 0) {
 				output = "Bill removed";
 			}
 			else {
 				output = "Bill not found";
 			}
-			
+
 		}catch(Exception e) {
 			output = "Error deleting data " + e.getMessage();
 			System.err.println(output);
@@ -125,12 +120,12 @@ public class BillServiceImpl implements BillService{
 		return output;
 	}
 
-	
+
 
 	//Get all bills
 	@Override
 	public ArrayList<Bill> viewAllBills(String user_ID, String account_ID) {
-		
+
 		//Bill attribute
 		int bill_ID = 0;
 		int year = 0;
@@ -139,27 +134,27 @@ public class BillServiceImpl implements BillService{
 		float units = 0;
 		float unit_price = 0;
 		float charge = 0;
-		
-		
+
+
 		//Bill List
 		billList = new ArrayList<Bill>();
-		
+
 		//Connection
 		try {
 			connection = connect();
-			
+
 			if(connection == null) {
 				System.err.println("Error while connecting to the database");
 				return null;
 			}
-			
+
 			//Query
 			query = "SELECT * FROM bills WHERE user_ID = " + user_ID + " AND account_ID = " + account_ID;
-			
+
 			//Execute
 			statement = connection.createStatement();
 			resultSet = statement.executeQuery(query);
-			
+
 			//Get all results
 			while(resultSet.next()) {
 				bill_ID = resultSet.getInt("bill_ID");
@@ -169,18 +164,18 @@ public class BillServiceImpl implements BillService{
 				units = resultSet.getFloat("units");
 				unit_price = resultSet.getFloat("unit_price");
 				charge = resultSet.getFloat("charge");
-				
+
 				//Add to list
 				billList.add(new Bill(bill_ID, year, month, date_created, units, unit_price, charge ));
 			}
-			
+
 		}catch(Exception e) {
 			System.err.println("Error getting data " + e.getMessage());
 		}
-		
+
 		return billList;
 	}
-	
+
 
 	//Get bill by year and month
 	@Override
@@ -191,27 +186,27 @@ public class BillServiceImpl implements BillService{
 		float units = 0;
 		float unit_price = 0;
 		float charge = 0;
-		
-		
+
+
 		//Bill List
 		billList = new ArrayList<Bill>();
-		
+
 		//Connection
 		try {
 			connection = connect();
-			
+
 			if(connection == null) {
 				System.err.println("Error while connecting to the database");
 				return null;
 			}
-			
+
 			//Query
 			query = "SELECT * FROM bills WHERE user_ID = " + user_ID + "AND year = " + year + "AND month = " + month;
-			
+
 			//Execute
 			statement = connection.createStatement();
 			resultSet = statement.executeQuery(query);
-			
+
 			//Get all results
 			while(resultSet.next()) {
 				bill_ID = resultSet.getInt("bill_ID");
@@ -219,23 +214,23 @@ public class BillServiceImpl implements BillService{
 				units = resultSet.getFloat("units");
 				unit_price = resultSet.getFloat("unit_price");
 				charge = resultSet.getFloat("charge");
-				
+
 				//Add to list
 				billList.add(new Bill(bill_ID, year, month, date_created, units, unit_price, charge ));
 			}
-			
+
 		}catch(Exception e) {
 			System.err.println("Error getting data " + e.getMessage());
 		}
-		
+
 		return billList;
 	}
-	
-	
+
+
 	//Update bill
 	@Override
 	public String updateBill(int bill_ID, Bill bill) {
-		
+
 		try {
 			connection  = connect();
 			if (connection == null ) {
@@ -251,8 +246,8 @@ public class BillServiceImpl implements BillService{
 			preparedStatement.setFloat(1, bill.getUnits());
 			preparedStatement.setFloat(2, bill.getUnit_price());
 			preparedStatement.setFloat(3, bill.getCharge());
-			
-			
+
+
 			preparedStatement.executeUpdate();
 
 			connection.close();

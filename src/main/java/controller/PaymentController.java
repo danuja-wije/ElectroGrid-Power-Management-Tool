@@ -19,36 +19,50 @@ import service.PaymentServiceImpl;
 
 @Path("/Payment")
 public class PaymentController {
-	
-		//Payment service
-		PaymentService paymentService = new PaymentServiceImpl();
-		
-		ArrayList<Payment> payments= new ArrayList<>();;
-		
-		
-		//Insert
-		@POST
-		@Path("/New")
-		@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-		@Produces(MediaType.TEXT_PLAIN)
-		public String insertPayment(@FormParam("user_ID") String user_ID , @FormParam("bill_ID") int bill_ID, @FormParam("amount") float amount
-				,@FormParam("card_number") long card_number) {
-			String output = paymentService.insertPayment(new Payment(
+
+	//Payment service
+	PaymentService paymentService = new PaymentServiceImpl();
+
+	ArrayList<Payment> payments= new ArrayList<>();
+
+
+	//Insert
+	@POST
+	@Path("/New")
+	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+	@Produces(MediaType.TEXT_PLAIN)
+	public String insertPayment(@FormParam("user_ID") String user_ID , @FormParam("bill_ID") int bill_ID, @FormParam("amount") float amount
+			,@FormParam("card_number") long card_number) {
+		String output ="";
+
+		//Validate
+		if(bill_ID < 0) {
+			output += " Invalid Bill ID";
+		}
+		if(amount < 0) {
+			output += " Invalid amount";
+		}
+
+
+		if(output == "") {
+			output = paymentService.insertPayment(new Payment(
 					user_ID, bill_ID, amount, card_number));
-			return output;
 		}
-		
-		
-		//View
-		@GET
-		@Path("/{user_ID}")
-		@Produces(MediaType.APPLICATION_JSON)
-		public String viewPayment(@PathParam("user_ID") String UID) {
-			Gson gson = new Gson();
-			payments = paymentService.getPayments(UID);
-			String jsonString  = gson.toJson(payments);
-			return jsonString;
-		}
-		
+
+		return output;
+	}
+
+
+	//View
+	@GET
+	@Path("/{user_ID}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String viewPayment(@PathParam("user_ID") String UID) {
+		Gson gson = new Gson();
+		payments = paymentService.getPayments(UID);
+		String jsonString  = gson.toJson(payments);
+		return jsonString;
+	}
+
 
 }

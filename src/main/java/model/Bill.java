@@ -1,7 +1,7 @@
 package model;
 
 public class Bill {
-	
+
 	//Attributes
 	private String user_ID;
 	private String account_ID;
@@ -12,8 +12,8 @@ public class Bill {
 	private float units;
 	private float unit_price;
 	private float charge;
-	
-	
+
+
 	//Constructor
 	public Bill(String user_ID, String account_ID, int bill_ID, int year, String month, float units, float unit_price, float charge) {
 		super();
@@ -26,7 +26,7 @@ public class Bill {
 		this.unit_price = unit_price;
 		this.charge = charge;
 	}
-	
+
 	public Bill(String user_ID, String account_ID, int year, String month, float units, float unit_price, float charge) {
 		super();
 		this.user_ID = user_ID;
@@ -64,7 +64,7 @@ public class Bill {
 		this.unit_price = unit_price;
 		this.charge = charge;
 		this.date_created = date_created;
-}
+	}
 
 	//Getters and setters
 	public String getUser_ID() {
@@ -90,7 +90,7 @@ public class Bill {
 	public void setYear(int year) {
 		this.year = year;
 	}
-	
+
 	public String getMonth() {
 		return month;
 	}
@@ -138,6 +138,5 @@ public class Bill {
 	public void setAccount_ID(String account_ID) {
 		this.account_ID = account_ID;
 	}
-
 	
 }
