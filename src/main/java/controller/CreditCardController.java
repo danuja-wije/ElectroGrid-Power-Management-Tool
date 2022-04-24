@@ -1,6 +1,9 @@
 package controller;
 
+import java.time.format.DateTimeFormatter;
+import java.time.format.ResolverStyle;
 import java.util.ArrayList;
+import java.util.Locale;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -19,6 +22,7 @@ import model.CreditCard;
 import service.CreditCardService;
 import service.CreditCardServiceImpl;
 
+
 @Path("/CrecitCard")
 public class CreditCardController {
 
@@ -33,10 +37,23 @@ public class CreditCardController {
 	@Path("/New")
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	@Produces(MediaType.TEXT_PLAIN)
-	public String insertCard(@FormParam("user_ID") String userID , @FormParam("card_number") long cardNumber, @FormParam("cvv") int cvv
+	public String insertCard(@FormParam("user_ID") String userID , @FormParam("card_number") String cardNumber, @FormParam("cvv") int cvv
 			,@FormParam("date") String date, @FormParam("name_on_card") String name, @FormParam("card_issuer") String issuer) {
-		String output = cardService.insertCreditCard(new CreditCard(
-				userID, cardNumber, cvv, date, name, issuer));
+		
+		String output = "";
+		DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("uuuu-MM-dd", Locale.US)
+			    .withResolverStyle(ResolverStyle.STRICT);
+		
+//		DateValidator validator = new DateValidatorUsingDateTimeFormatter(dateFormatter);
+		
+		
+		if(cardNumber.length() > 19) {
+			output = "Invalid card Number";
+		}
+		
+		
+		output = cardService.insertCreditCard(new CreditCard(
+		userID, cardNumber, cvv, date, name, issuer));
 		return output;
 	}
 	
@@ -57,7 +74,7 @@ public class CreditCardController {
 	@Path("/{card_number}")
 	@Produces(MediaType.TEXT_PLAIN)
 	public String deleteCards(@PathParam("card_number") String CardNum) {
-		String response = cardService.deleteCard(Long.parseLong(CardNum));
+		String response = cardService.deleteCard(CardNum);
 		return response;
 	}
 	
@@ -67,7 +84,7 @@ public class CreditCardController {
 	@Path("/Updatecard/{old_card}")
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	@Produces(MediaType.TEXT_PLAIN)
-	public String updateCard(@PathParam("old_card") long old_card , @FormParam("card_number") long cardNumber, @FormParam("cvv") int cvv
+	public String updateCard(@PathParam("old_card") String old_card , @FormParam("card_number") String cardNumber, @FormParam("cvv") int cvv
 			,@FormParam("date") String date, @FormParam("name_on_card") String name, @FormParam("card_issuer") String issuer) {
 		String output = cardService.updateCard(old_card, new CreditCard(
 				null, cardNumber, cvv, date, name, issuer));

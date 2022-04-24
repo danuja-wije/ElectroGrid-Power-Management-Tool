@@ -14,7 +14,7 @@ public class PaymentServiceImpl implements PaymentService{
 
 	//DB parameters
 	private static final String USERNAME = "root";
-	private static final String URL = "jdbc:mysql://127.0.0.1:3306/electrogriddb";
+	private static final String URL = "jdbc:mysql://127.0.0.1:3306/consumerdb";
 	private static final String DRIVER = "com.mysql.cj.jdbc.Driver";
 	private static final String PASSWORD = "";
 	private static Connection connection = null;
@@ -51,7 +51,7 @@ public class PaymentServiceImpl implements PaymentService{
 	
 	//Insert
 	@Override
-	public String insertPayment(Payment payment) {
+	public String insertPayment(Payment payment){
 		
 		try {
 			//Connection
@@ -90,7 +90,6 @@ public class PaymentServiceImpl implements PaymentService{
 	}
 	
 	
-
 	@Override
 	public ArrayList<Payment> getPayments(String UID) {
 		//payment attribute

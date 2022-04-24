@@ -2,14 +2,14 @@ package model;
 
 public class CreditCard {
 	private String user_ID;
-	private long card_number;
+	private String card_number;
 	private int cvv;
 	private String date;
 	private String name_on_card;
 	private String card_issuer;
 	
 	//Constructor
-	public CreditCard(String user_ID, long card_number, int cvv, String date, String name_on_card, String card_issuer) {
+	public CreditCard(String user_ID, String card_number, int cvv, String date, String name_on_card, String card_issuer) {
 		super();
 		this.user_ID = user_ID;
 		this.card_number = card_number;
@@ -28,11 +28,11 @@ public class CreditCard {
 		this.user_ID = user_ID;
 	}
 	
-	public long getCard_number() {
+	public String getCard_number() {
 		return card_number;
 	}
 
-	public void setCard_number(long card_number) {
+	public void setCard_number(String card_number) {
 		this.card_number = card_number;
 	}
 
