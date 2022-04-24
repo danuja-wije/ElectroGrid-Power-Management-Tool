@@ -38,9 +38,7 @@ public class ProfileController {
 			@FormParam("email") String email, 
 			@FormParam("username") String username, 
 			@FormParam("password") String password) {
-		
-		//System.out.println("Task ID :"+taskID);
-		//System.out.println("Worker ID :"+workerID);
+	
 		Boolean isTrue = ProfileService.insertProfileDetails(name, address, mobile, nic, email, username, password);
 		
 		String output;
@@ -52,5 +50,37 @@ public class ProfileController {
 		}
 			
 		return output;
+	}
+	
+	@PUT
+	@Path("/")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.TEXT_PLAIN)
+	public String updateProfileDetails(String profileDetails)
+	{
+	//Convert the input string to a JSON object
+	 JsonObject consumerObj = new JsonParser().parse(profileDetails).getAsJsonObject();
+	 
+	//Read the values from the JSON object
+	 String conId = consumerObj.get("consumerId").getAsString();
+	 String name = consumerObj.get("name").getAsString();
+	 String address = consumerObj.get("address").getAsString();
+	 String mobile = consumerObj.get("mobile").getAsString();
+	 String nic = consumerObj.get("nic").getAsString();
+	 String email = consumerObj.get("email").getAsString();
+	 String username = consumerObj.get("username").getAsString();
+	 String password = consumerObj.get("password").getAsString();
+	 
+	 Boolean isTrue = ProfileService.updateProfileDetails(conId, name, address, mobile, nic, email, username, password);
+	 
+	 String output;
+	 if(isTrue == true) {
+		output = "Updated Successfully..."	;
+	 } 
+	 else {
+		output = "Error: Not Updated Succussfully...";
+	 }
+	 
+	return output;
 	}
 }
