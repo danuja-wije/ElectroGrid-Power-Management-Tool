@@ -16,7 +16,7 @@ public class CreditCardServiceImpl implements CreditCardService{
 	
 	//DB parameters
 	private static final String USERNAME = "root";
-	private static final String URL = "jdbc:mysql://127.0.0.1:3306/electrogriddb";
+	private static final String URL = "jdbc:mysql://127.0.0.1:3306/consumerdb";
 	private static final String DRIVER = "com.mysql.cj.jdbc.Driver";
 	private static final String PASSWORD = "";
 	private static Connection connection = null;
@@ -67,7 +67,7 @@ public class CreditCardServiceImpl implements CreditCardService{
 			preparedStatement = connection.prepareStatement(query);
 
 			preparedStatement.setString(1, card.getUser_ID());
-			preparedStatement.setLong(2, card.getCard_number());
+			preparedStatement.setString(2, card.getCard_number());
 			preparedStatement.setInt(3, card.getCvv());
 			preparedStatement.setString(4, card.getDate());
 			preparedStatement.setString(5, card.getName_on_card());
@@ -93,11 +93,11 @@ public class CreditCardServiceImpl implements CreditCardService{
 	public ArrayList<CreditCard> viewCards(String UID) {
 		//Card attribute
 		String user_ID = "";
-		long card_number = 0;
+		String card_number = "";
 		int cvv = 0;
 		String date = "";
 		String name_on_card = "";
-		String card_issuer ="";
+		String card_issuer = "";
 		
 		//Card List
 		cardList = new ArrayList<CreditCard>();
@@ -121,7 +121,7 @@ public class CreditCardServiceImpl implements CreditCardService{
 			//Get all results
 			while(resultSet.next()) {
 				user_ID = resultSet.getString("user_ID");
-				card_number = resultSet.getLong("card_number");
+				card_number = resultSet.getString("card_number");
 				cvv = resultSet.getInt("cvv");
 				date = resultSet.getString("exp_date");
 				name_on_card = resultSet.getString("name_on_card");
@@ -141,7 +141,7 @@ public class CreditCardServiceImpl implements CreditCardService{
 	
 	//Delete Card
 	@Override
-	public String deleteCard(long cardNumber) {
+	public String deleteCard(String cardNumber) {
 		//Connection
 		try {
 			connection = connect();
@@ -174,7 +174,7 @@ public class CreditCardServiceImpl implements CreditCardService{
 
 	//Update Card
 	@Override
-	public String updateCard(long cardNumber, CreditCard card) {
+	public String updateCard(String cardNumber, CreditCard card) {
 		try {
 			connection  = connect();
 			if (connection == null ) {
@@ -187,7 +187,7 @@ public class CreditCardServiceImpl implements CreditCardService{
 
 			preparedStatement = connection.prepareStatement(query);
 
-			preparedStatement.setLong(1, card.getCard_number());
+			preparedStatement.setString(1, card.getCard_number());
 			preparedStatement.setInt(2, card.getCvv());
 			preparedStatement.setString(3, card.getDate());
 			preparedStatement.setString(4, card.getName_on_card());
