@@ -38,10 +38,33 @@ public class ProfileController {
 			@FormParam("email") String email, 
 			@FormParam("username") String username, 
 			@FormParam("password") String password) {
+		
+		String output;
+		String regexPattern = "\\d{3}-\\d{3}-\\d{4}";
+		String regexEmailPattern = "^(.+)@(.+)$";
+		
+		if(name.isEmpty()){
+			output = "Enter name.";
+		}
+		else if(!mobile.matches(regexPattern)) {
+			output = "Enter valid mobile number.";
+		}
+		else if(!email.matches(regexEmailPattern)) {
+			output = "Enter valid email address.";
+		}
+		else if(username.isEmpty()) {
+			output = "Enter username.";
+		}
+		else if(password.isEmpty()) {
+			output = "Enter password.";
+		}
+		else if(password.length() < 5) {
+			output = "Password contain at least 5 charators.";
+		}
 	
 		Boolean isTrue = ProfileService.insertProfileDetails(name, address, mobile, nic, email, username, password);
 		
-		String output;
+		
 		if(isTrue == true) {
 			output = "Inserted Successfully..."	;
 		} 
