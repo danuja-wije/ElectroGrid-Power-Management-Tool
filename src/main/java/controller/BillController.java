@@ -43,7 +43,7 @@ public class BillController {
 		
 		//View All Bills
 		@GET
-		@Path("/{user_ID}")
+		@Path("/{user_ID}/{account_ID}")
 		@Produces(MediaType.APPLICATION_JSON)
 		public String viewAllBills(@PathParam("user_ID") String UID, @PathParam("account_ID") String AccID) {
 			Gson gson = new Gson();
