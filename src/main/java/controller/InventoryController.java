@@ -34,9 +34,9 @@ public class InventoryController {
 	@Produces(MediaType.TEXT_PLAIN)
 	public String createInventory( @FormParam("invID") int id,@FormParam("invItemCode") String code,@FormParam("invItemName") String name,
 								@FormParam("stockQty") int qty, @FormParam("manufactYr") String manufact, @FormParam("latestRepairDate") String repair,
-								  @FormParam("createdTime") String created, @FormParam("updatedTime") String updated){
+								@FormParam("handledBy") String handle,@FormParam("createdTime") String created, @FormParam("updatedTime") String updated){
 		
-			String output = invService.insertInventory(new Inventory(id,code,name,qty,manufact,repair,created,updated));
+			String output = invService.insertInventory(new Inventory(id,code,name,qty,manufact,repair,handle,created,updated));
 			return output;
 	}
 	
@@ -76,10 +76,11 @@ public class InventoryController {
 							@FormParam("stockQty") int qty,
 							@FormParam("manufactYr") String manufact,
 							@FormParam("latestRepairDate") String repair,
+							@FormParam("handledBy") String handle,
 							@FormParam("createdTime") String created,
 							@FormParam("updatedTime") String updated) {
 		
-		String output = invService.updateInventory(invID, new Inventory(invID,code,name,qty,manufact,repair,created,updated));
+		String output = invService.updateInventory(invID, new Inventory(invID,code,name,qty,manufact,repair,handle,created,updated));
 		return output;
 	}
 	
