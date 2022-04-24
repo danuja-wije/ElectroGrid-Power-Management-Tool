@@ -13,7 +13,7 @@ import model.CreditCard;
 
 
 public class CreditCardServiceImpl implements CreditCardService{
-	
+
 	//DB parameters
 	private static final String USERNAME = "root";
 	private static final String URL = "jdbc:mysql://127.0.0.1:3306/consumerdb";
@@ -24,14 +24,14 @@ public class CreditCardServiceImpl implements CreditCardService{
 	private static PreparedStatement preparedStatement = null;
 	private static Statement statement = null;
 	private static ResultSet resultSet = null;
-	
+
 	private static ArrayList<CreditCard> cardList = null;
 	String output = "";
-	
+
 	//Card model
 	private static CreditCard card;
-	
-	
+
+
 	//Connection
 	private Connection connect() throws SQLException {
 		if (connection != null && !connection.isClosed()) {
@@ -48,11 +48,11 @@ public class CreditCardServiceImpl implements CreditCardService{
 			return connection;
 		}
 	}
-	
+
 	//Insert card
 	@Override
 	public String insertCreditCard(CreditCard card) {
-		
+
 		try {
 			connection  = connect();
 			if (connection == null ) {
@@ -72,7 +72,7 @@ public class CreditCardServiceImpl implements CreditCardService{
 			preparedStatement.setString(4, card.getDate());
 			preparedStatement.setString(5, card.getName_on_card());
 			preparedStatement.setString(6, card.getCard_issuer());
-			
+
 			preparedStatement.execute();
 
 			connection.close();
@@ -98,26 +98,26 @@ public class CreditCardServiceImpl implements CreditCardService{
 		String date = "";
 		String name_on_card = "";
 		String card_issuer = "";
-		
+
 		//Card List
 		cardList = new ArrayList<CreditCard>();
-		
+
 		//Connection
 		try {
 			connection = connect();
-			
+
 			if(connection == null) {
 				System.err.println("Error while connecting to the database");
 				return null;
 			}
-			
+
 			//Query
 			query = "SELECT * FROM credit_cards WHERE user_ID = " + UID;
-			
+
 			//Execute
 			statement = connection.createStatement();
 			resultSet = statement.executeQuery(query);
-			
+
 			//Get all results
 			while(resultSet.next()) {
 				user_ID = resultSet.getString("user_ID");
@@ -126,43 +126,43 @@ public class CreditCardServiceImpl implements CreditCardService{
 				date = resultSet.getString("exp_date");
 				name_on_card = resultSet.getString("name_on_card");
 				card_issuer = resultSet.getString("card_issuer");
-				
+
 				//Add to list
 				cardList.add(new CreditCard(user_ID, card_number, cvv, date, name_on_card, card_issuer));
 			}
-			
+
 		}catch(Exception e) {
 			System.err.println("Error getting data " + e.getMessage());
 		}
-		
+
 		return cardList;
 	}
 
-	
+
 	//Delete Card
 	@Override
 	public String deleteCard(String cardNumber) {
 		//Connection
 		try {
 			connection = connect();
-			
+
 			if(connection == null) {
 				output = "Error while connectiong to the database";
 				return output;
 			}
-			
+
 			//Query
 			query = "DELETE FROM credit_cards WHERE card_number = " + cardNumber;
 			statement = connection.createStatement();
 			int del = statement.executeUpdate(query);
-			
+
 			if(del > 0) {
 				output = "Card removed";
 			}
 			else {
 				output = "Card not found";
 			}
-			
+
 		}catch(Exception e) {
 			output = "Error deleting data " + e.getMessage();
 			System.err.println(output);
@@ -192,7 +192,7 @@ public class CreditCardServiceImpl implements CreditCardService{
 			preparedStatement.setString(3, card.getDate());
 			preparedStatement.setString(4, card.getName_on_card());
 			preparedStatement.setString(5, card.getCard_issuer());
-			
+
 			preparedStatement.executeUpdate();
 
 			connection.close();

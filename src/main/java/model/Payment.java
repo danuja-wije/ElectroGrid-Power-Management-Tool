@@ -7,7 +7,7 @@ public class Payment {
 	private float amount;
 	private long card_number;
 	private long payment_ID;
-	
+
 	//Constructor
 	public Payment(String user_ID, int bill_ID, String transaction_date, float amount, long card_number, long payment_ID) {
 		super();
@@ -74,5 +74,5 @@ public class Payment {
 	public void setPayment_ID(long payment_ID) {
 		this.payment_ID = payment_ID;
 	}
-	
+
 }

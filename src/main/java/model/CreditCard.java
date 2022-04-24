@@ -7,7 +7,7 @@ public class CreditCard {
 	private String date;
 	private String name_on_card;
 	private String card_issuer;
-	
+
 	//Constructor
 	public CreditCard(String user_ID, String card_number, int cvv, String date, String name_on_card, String card_issuer) {
 		super();
@@ -27,7 +27,7 @@ public class CreditCard {
 	public void setUser_ID(String user_ID) {
 		this.user_ID = user_ID;
 	}
-	
+
 	public String getCard_number() {
 		return card_number;
 	}

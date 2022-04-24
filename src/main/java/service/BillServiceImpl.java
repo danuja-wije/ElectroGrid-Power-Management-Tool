@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import model.Bill;
 
 public class BillServiceImpl implements BillService{ 
-	
+
 	//DB parameters
 	private static final String USERNAME = "root";
 	private static final String URL = "jdbc:mysql://127.0.0.1:3306/consumerdb";
