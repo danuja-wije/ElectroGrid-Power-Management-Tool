@@ -59,8 +59,8 @@ public class InventoryServiceImpl implements InventoryService {
 
 			//Query
 			query = "INSERT INTO `inventory` (`invID`, `invItemCode`, `invItemName`,`stockQty`,"
-					+ "`manufactYr`, `latestRepairDate`,`createdTime`,`updatedTime`)"
-						+ " VALUES (NULL, ?, ?, ?, ?, ?, NULL, NULL)";
+					+ "`manufactYr`, `latestRepairDate`,`handledBy`,`createdTime`,`updatedTime`)"
+						+ " VALUES (NULL, ?, ?, ?, ?, ?, ?, NULL, NULL)";
 
 			preparedStmt = con.prepareStatement(query);
 
@@ -69,7 +69,7 @@ public class InventoryServiceImpl implements InventoryService {
 			preparedStmt.setInt(3, inv.getStockQty());
 			preparedStmt.setString(4, inv.getManufactYr());
 			preparedStmt.setString(5, inv.getLatestRepairDate());
-				
+			preparedStmt.setString(6, inv.getHandledBy());	
 			preparedStmt.execute();
 
 			con.close();
@@ -96,6 +96,7 @@ public class InventoryServiceImpl implements InventoryService {
 		int qty = 0;
 		String manufact = "";
 		String repair = "";
+		String handle ="";
 		String created = "";
 		String updated = "";
 		
@@ -126,11 +127,12 @@ public class InventoryServiceImpl implements InventoryService {
 				qty = rs.getInt("stockQty");
 				manufact = rs.getString("manufactYr");
 				repair = rs.getString("latestRepairDate");
+				handle = rs.getString("handledBy");
 				created = rs.getString("createdTime");
 				updated = rs.getString("updatedTime");
 				
 				//Add to list
-				invList.add(new Inventory(invID,code,name,qty,manufact,repair,created,updated));
+				invList.add(new Inventory(invID,code,name,qty,manufact,repair,handle,created,updated));
 				
 			}
 			con.close();
@@ -152,6 +154,7 @@ public class InventoryServiceImpl implements InventoryService {
 		int qty = 0;
 		String manufact = "";
 		String repair = "";
+		String handle ="";
 		String created = "";
 		String updated = "";
 		
@@ -182,11 +185,12 @@ public class InventoryServiceImpl implements InventoryService {
 				qty = rs.getInt("stockQty");
 				manufact = rs.getString("manufactYr");
 				repair = rs.getString("latestRepairDate");
+				handle = rs.getString("handledBy");
 				created = rs.getString("createdTime");
 				updated = rs.getString("updatedTime");
 				
 				//Add to list
-				invList.add(new Inventory(invID,code,name,qty,manufact,repair,created,updated));
+				invList.add(new Inventory(invID,code,name,qty,manufact,repair,handle,created,updated));
 				
 			}
 			con.close();
@@ -212,7 +216,7 @@ public class InventoryServiceImpl implements InventoryService {
 
 			//Query
 			query = "UPDATE inventory SET invItemCode = ? , invItemName =?,stockQty=?,manufactYr=?,"
-					+ "latestRepairDate=? WHERE invID =" +invID;
+					+ "latestRepairDate=?,handledBy=? WHERE invID =" +invID;
 	
 
 			preparedStmt = con.prepareStatement(query);
@@ -222,7 +226,7 @@ public class InventoryServiceImpl implements InventoryService {
 			preparedStmt.setInt(3, inv.getStockQty());
 			preparedStmt.setString(4, inv.getManufactYr());
 			preparedStmt.setString(5, inv.getLatestRepairDate());
-				
+			preparedStmt.setString(6, inv.getHandledBy());	
 			preparedStmt.executeUpdate();
 
 			con.close();
