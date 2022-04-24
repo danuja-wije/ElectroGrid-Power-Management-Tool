@@ -1,10 +1,8 @@
 package client;
 
-
-
-
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
+import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.api.client.WebResource;
 
 public class ClientManaget {
 	
