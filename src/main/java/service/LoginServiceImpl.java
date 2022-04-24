@@ -8,7 +8,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Base64;
 
-import model.Interruption;
+
 
 public class LoginServiceImpl implements LoginService {
 	private static final String USERNAME= "root";
@@ -69,14 +69,14 @@ public class LoginServiceImpl implements LoginService {
 		return authenticate(email, password);
 	}
 	@Override
-	public boolean authenticate(String email,String password) {
+	public boolean authenticate(String userID,String password) {
 		boolean output = false;
 		String usr= "";
 		String pss = "";
 		
-		System.out.println(email);
+		System.out.println(userID);
 		System.out.println(password);
-		query = "SELECT * FROM `authdetails` WHERE `authdetails`.`email` ='"+email+"' AND `authdetails`.`password` ='"+password+"'";
+		query = "SELECT * FROM `authdetails` WHERE `authdetails`.`userID` ='"+userID+"' AND `authdetails`.`password` ='"+password+"'";
 		try {
 			connection = connect();
 			if (connection == null) {
@@ -95,7 +95,7 @@ public class LoginServiceImpl implements LoginService {
 
 			}
 			
-			if (usr.equals(email) && pss.equals(password)) {
+			if (usr.equals(userID) && pss.equals(password)) {
 				output = true;
 			}
 			connection.close();
