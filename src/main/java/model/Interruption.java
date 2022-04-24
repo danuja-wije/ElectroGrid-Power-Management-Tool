@@ -9,12 +9,12 @@ public class Interruption {
 	private String description;
 	private String interruptionStartDate;
 	private String interruptionEndDate;
-	private List<Employee>efectedList;
+	private String[] efectedList;
 	private String approval;
 	private String timeStamp;
 	
 	public Interruption(String inType, String title, String description, String interruptionStartDate,
-			String interruptionEndDate, List<Employee> efectedList, String approval) {
+			String interruptionEndDate, String[] efectedList, String approval) {
 		super();
 		this.inType = inType;
 		this.title = title;
@@ -50,7 +50,7 @@ public class Interruption {
 		return interruptionEndDate;
 	}
 
-	public List<Employee> getEfectedList() {
+	public String[] getEfectedList() {
 		return efectedList;
 	}
 

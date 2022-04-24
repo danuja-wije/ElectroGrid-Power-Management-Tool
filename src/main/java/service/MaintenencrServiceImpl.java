@@ -61,9 +61,11 @@ public class MaintenencrServiceImpl implements MaintenanceService {
 			}
 
 			query = "INSERT INTO `interruption` (`intType`, `title`, `description`, `approval`, `interruptionStart`, `interruptionEnd`) VALUES (?,?,?,?,?,?)";
-
-			preparedStatement = connection.prepareStatement(query);
-
+ 
+			
+			String query2= "INSERT INTO `efectedcustomer` (`interrruptionID`, `customerID`) VALUES (?, ?)";
+			
+			preparedStatement = connection.prepareStatement(query,Statement.RETURN_GENERATED_KEYS);
 			preparedStatement.setString(1, interruption.getInType());
 			preparedStatement.setString(2, interruption.getTitle());
 			preparedStatement.setString(3, interruption.getDescription());
@@ -71,7 +73,25 @@ public class MaintenencrServiceImpl implements MaintenanceService {
 			preparedStatement.setString(5, interruption.getInterruptionStartDate());
 			preparedStatement.setString(6, interruption.getInterruptionEndDate());
 			preparedStatement.execute();
+			
+			int id = 0;
+			try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
+		            if (generatedKeys.next()) {
+		                id = generatedKeys.getInt(1);
+		            }
+		            else {
+		                throw new SQLException("Creating user failed, no ID obtained.");
+		            }
+		        }
+			preparedStatement = connection.prepareStatement(query2);
 
+			
+			for (String custID : interruption.getEfectedList()) {
+				preparedStatement.setInt(1, id);
+				preparedStatement.setString(2, custID);
+				preparedStatement.execute();
+			}
+			
 			connection.close();
 
 			output = "Interted Successfully";
@@ -171,9 +191,61 @@ public class MaintenencrServiceImpl implements MaintenanceService {
 
 
 	@Override
-	public String updateEffectedCustomer(List<String>list) {
+	public String updateEffectedCustomer(int interruptionID,String[] list) {
+
 		// TODO Auto-generated method stub
-		return null;
+		String output = "";
+
+		try {
+			connection = connect();
+
+			if (connection == null) {
+				output = "Error while conecting to the database for Updating interruption";
+				return output;
+			}
+
+			query = "DELETE FROM efectedcustomer WHERE `efectedcustomer`.`interrruptionID` = ? AND `efectedcustomer`.`customerID` = ?";
+			
+			String query2 = "SELECT * FROM `efectedcustomer` WHERE `efectedcustomer`.`interrruptionID` = "+interruptionID;
+			
+			String query3 = "INSERT INTO `efectedcustomer` (`interrruptionID`, `customerID`) VALUES (?, ?)";
+			
+			statement = connection.createStatement();
+			resultSet = statement.executeQuery(query2);
+			
+			String[] new_list = list;
+			List<String>array = new ArrayList<String>();
+
+
+			while(resultSet.next()) {
+				array.add(resultSet.getString("customerID"));
+			}
+
+			preparedStatement = connection.prepareStatement(query);
+			for (String string : array) {
+				preparedStatement.setInt(1, interruptionID);
+				preparedStatement.setString(2, string);
+				preparedStatement.execute();
+			}
+			preparedStatement = connection.prepareStatement(query3);
+			for (String custID : new_list) {
+				preparedStatement.setInt(1, interruptionID);
+				preparedStatement.setString(2, custID);
+				preparedStatement.execute();
+			}
+
+			connection.close();
+
+			output = "Updated Successfully";
+			query = "";
+
+		} catch (Exception e) {
+			// TODO: handle exception
+			output = "Error while inserting Updating";
+			System.err.println(e.getMessage());
+		}
+
+		return output;
 	}
 
 

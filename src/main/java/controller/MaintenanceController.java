@@ -30,8 +30,10 @@ public class MaintenanceController {
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	@Produces(MediaType.TEXT_PLAIN)
 
-	public String insertInterruption(@FormParam("intType") String intType,@FormParam("title") String title,@FormParam("description") String description,@FormParam("startDate") String startDate,@FormParam("endDate") String endDate,@FormParam("approval")String approval) {
-		Interruption interruption = new Interruption(intType, title, description, startDate, endDate, null, approval);
+	public String insertInterruption(@FormParam("intType") String intType,@FormParam("title") String title,@FormParam("description") String description,@FormParam("startDate") String startDate,@FormParam("endDate") String endDate,@FormParam("approval")String approval,@FormParam("custIDs") String custIDs) {
+		
+		String[] list = custIDs.split(";");
+		Interruption interruption = new Interruption(intType, title, description, startDate, endDate, list, approval);
 		String output = maintenanceService.insertInterruption(interruption);
 		return output;
 	}
@@ -48,6 +50,18 @@ public class MaintenanceController {
 		return output;
 	}
 
+	@PUT
+	@Path("/Interruptions/effected")
+	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+	@Produces(MediaType.TEXT_PLAIN)
+
+	public String updateEffectedCustomer(@FormParam("id") int id,@FormParam("custIDs") String custIDs) {
+		String[] list = custIDs.split(";");
+		String output = maintenanceService.updateEffectedCustomer(id,list);
+		return output;
+	}
+	
+	
 	@DELETE
 	@Path("/Interruptions/{id}")
 	@Produces(MediaType.TEXT_PLAIN)
