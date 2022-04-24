@@ -83,4 +83,23 @@ public class ProfileController {
 	 
 	return output;
 	}
+	
+	@DELETE
+	@Path("/{consumerId}")
+	@Produces(MediaType.TEXT_PLAIN)
+	public String deleteProfile(@PathParam("consumerId") String consumerId) {
+		
+		Boolean isTrue = ProfileService.deleteProfile(consumerId);
+
+		String output;
+		 if(isTrue == true) {
+			output = "Deleted Successfully..."	;
+		 } 
+		 else {
+			output = "Error: Not Deleted Succussfully...";
+		 }
+		 
+		return output;
+	}
+	
 }
