@@ -76,4 +76,30 @@ public class ProfileService {
  	
     	return isSuccess;
     }
+	
+	//Update Consumer Profile Details
+	public static boolean updateProfileDetails(String conId, String name, String address, String mobile, String nic, String email, String username, String  password) {
+		
+		
+    	try {
+    		
+    		con = DBConneect.getConnection();
+    		stat = con.createStatement();
+    		String sql = "update consumer set name='"+name+"',address='"+address+"',mobile='"+mobile+"',nic='"+nic+"', email='"+email+"',username='"+username+"',password='"+password+"'"+ "where consumerId='"+conId+"'";
+    		int rs = stat.executeUpdate(sql);
+    		
+    		if(rs > 0) {
+    			Success = true;
+    		}
+    		else {
+    			Success = false;
+    		}
+    		
+    	}
+    	catch(Exception e) {
+    		e.printStackTrace();
+    	}
+    	
+    	return Success;
+    }
 }
