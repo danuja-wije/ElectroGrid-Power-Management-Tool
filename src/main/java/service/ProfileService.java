@@ -16,7 +16,7 @@ public class ProfileService {
 	private static Statement stat = null;
 	private static ResultSet rs = null;
 	
-	public static List<Consumer> viewProfile(String consumerId){
+	public static List<Consumer> viewProfile(String userName){
 		
 		ArrayList<Consumer> consumer = new ArrayList<>();
 		
@@ -26,7 +26,7 @@ public class ProfileService {
 			stat = con.createStatement();
 			
 			//SQL Query			
-			String sql = "select * from Consumer where consumerId = '"+consumerId+"'";
+			String sql = "select * from consumer where username = '"+userName+"'";
 						
 			rs= stat.executeQuery(sql);
 			
@@ -47,8 +47,6 @@ public class ProfileService {
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
-		
-		
 		return consumer;
 	}
 }

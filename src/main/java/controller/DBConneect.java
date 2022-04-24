@@ -5,7 +5,7 @@ import java.sql.DriverManager;
 
 public class DBConneect {
 	
-	private static String URL = "jdbc:mysql://localhost:3306/consumerDB";
+	private static String URL = "jdbc:mysql://localhost:3306/consumerdb";
 	private static String USERNAME ="root";
 	private static String PASSWORD = "";
 	private static String DRIVER = "com.mysql.jdbc.Driver";
