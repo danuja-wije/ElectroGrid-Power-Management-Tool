@@ -57,6 +57,7 @@ public class Bill {
 	public Bill(int bill_ID, int year, String month, String date_created, float units,
 			float unit_price, float charge) {
 		super();
+		this.bill_ID = bill_ID;
 		this.year = year;
 		this.month = month;
 		this.units = units;

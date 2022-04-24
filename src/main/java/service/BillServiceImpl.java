@@ -15,7 +15,7 @@ public class BillServiceImpl implements BillService{
 
 	//DB parameters
 	private static final String USERNAME = "root";
-	private static final String URL = "jdbc:mysql://127.0.0.1:3306/electrogridpaymentdb";
+	private static final String URL = "jdbc:mysql://127.0.0.1:3306/electrogriddb";
 	private static final String DRIVER = "com.mysql.cj.jdbc.Driver";
 	private static final String PASSWORD = "";
 	private static Connection connection = null;
@@ -63,17 +63,18 @@ public class BillServiceImpl implements BillService{
 			}
 			
 			//Query
-			query = "INSERT INTO `bills` (`user_ID`, `year`, `month`, `units`, `unit_price`, `charge`)"
-					+ " VALUES (?, ?, ?, ?, ?, ?)";
+			query = "INSERT INTO `bills` (`user_ID`, `account_ID`, `year`, `month`, `units`, `unit_price`, `charge`)"
+					+ " VALUES (?, ?, ?, ?, ?, ?, ?)";
 
 			preparedStatement = connection.prepareStatement(query);
 
 			preparedStatement.setString(1, bill.getUser_ID());
-			preparedStatement.setInt(2, bill.getYear());
-			preparedStatement.setString(3, bill.getMonth());
-			preparedStatement.setFloat(4, bill.getUnits());
-			preparedStatement.setFloat(5, bill.getUnit_price());
-			preparedStatement.setFloat(6, bill.getCharge());
+			preparedStatement.setString(2, bill.getAccount_ID());
+			preparedStatement.setInt(3, bill.getYear());
+			preparedStatement.setString(4, bill.getMonth());
+			preparedStatement.setFloat(5, bill.getUnits());
+			preparedStatement.setFloat(6, bill.getUnit_price());
+			preparedStatement.setFloat(7, bill.getCharge());
 			
 			preparedStatement.execute();
 			connection.close();
@@ -153,7 +154,7 @@ public class BillServiceImpl implements BillService{
 			}
 			
 			//Query
-			query = "SELECT * FROM bills WHERE user_ID = " + user_ID + "AND account_ID = " + account_ID;
+			query = "SELECT * FROM bills WHERE user_ID = " + user_ID + " AND account_ID = " + account_ID;
 			
 			//Execute
 			statement = connection.createStatement();
@@ -170,7 +171,7 @@ public class BillServiceImpl implements BillService{
 				charge = resultSet.getFloat("charge");
 				
 				//Add to list
-				billList.add(new Bill(year, month, date_created, units, unit_price, charge ));
+				billList.add(new Bill(bill_ID, year, month, date_created, units, unit_price, charge ));
 			}
 			
 		}catch(Exception e) {
