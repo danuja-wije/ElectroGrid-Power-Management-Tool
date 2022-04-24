@@ -23,7 +23,7 @@ public class PaymentController {
 		//Payment service
 		PaymentService paymentService = new PaymentServiceImpl();
 		
-		ArrayList<Payment> payments= new ArrayList<>();;
+		ArrayList<Payment> payments= new ArrayList<>();
 		
 		
 		//Insert
