@@ -60,7 +60,7 @@ public class ProfileService {
     	try {
     		con = DBConnect.getConnection();
     		stat = con.createStatement();
-    	    String sql = "insert into consumer values (0, '"+name+"', '"+address+"', '"+mobile+"', '"+nic+"','"+email+"','"+username+"', 'password', '"+password+"')";
+    	    String sql = "insert into consumer values (0, '"+name+"', '"+address+"', '"+mobile+"', '"+nic+"','"+email+"','"+username+"', '"+password+"')";
     		int rs = stat.executeUpdate(sql);
     		
     		if(rs > 0) {
@@ -80,9 +80,7 @@ public class ProfileService {
 	//Update Consumer Profile Details
 	public static boolean updateProfileDetails(String conId, String name, String address, String mobile, String nic, String email, String username, String  password) {
 		
-		
     	try {
-    		
     		con = DBConnect.getConnection();
     		stat = con.createStatement();
     		String sql = "update consumer set name='"+name+"',address='"+address+"',mobile='"+mobile+"',nic='"+nic+"', email='"+email+"',"
@@ -103,4 +101,33 @@ public class ProfileService {
     	
     	return Success;
     }
+	
+	//Delete Profile
+	public static boolean deleteProfile(String conId) {
+		
+		int convertID = Integer.parseInt(conId);
+		
+		//Validate
+		try {		
+			con = DBConnect.getConnection();
+			stat = con.createStatement();
+					
+			//SQL Query			
+			String sql = "delete from consumer where consumerId ='"+convertID+"'";
+					
+					//Run SQL Query
+					int a = stat.executeUpdate(sql); 
+					
+					if(a > 0) {
+						Success = true;
+					}
+					else {
+						Success = false;
+					}
+				}catch(Exception e) {
+					e.printStackTrace();
+				}
+		
+		return Success;
+	}
 }
