@@ -1,10 +1,9 @@
-package controller;
+package utill;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 
-public class DBConneect {
-	
+public class DBConnect {
 	private static String URL = "jdbc:mysql://localhost:3306/consumerdb";
 	private static String USERNAME ="root";
 	private static String PASSWORD = "";
@@ -26,4 +25,5 @@ public class DBConneect {
 		
 		return con;
 	}
+
 }

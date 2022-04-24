@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import model.Consumer;
-import controller.DBConneect;
+import utill.DBConnect;
 
 public class ProfileService {
 
@@ -24,7 +24,7 @@ public class ProfileService {
 		
 		try {
 			
-			con = DBConneect.getConnection();
+			con = DBConnect.getConnection();
 			stat = con.createStatement();
 			
 			//SQL Query			
@@ -58,9 +58,9 @@ public class ProfileService {
     	boolean isSuccess = false;
     	
     	try {
-    		con = DBConneect.getConnection();
+    		con = DBConnect.getConnection();
     		stat = con.createStatement();
-    	    String sql = "insert into consumer values (0, '"+name+"', '"+address+"', '"+mobile+"', '"+nic+"','"+email+"','"+username+"', 'pending', '"+password+"')";
+    	    String sql = "insert into consumer values (0, '"+name+"', '"+address+"', '"+mobile+"', '"+nic+"','"+email+"','"+username+"', 'password', '"+password+"')";
     		int rs = stat.executeUpdate(sql);
     		
     		if(rs > 0) {
@@ -83,9 +83,10 @@ public class ProfileService {
 		
     	try {
     		
-    		con = DBConneect.getConnection();
+    		con = DBConnect.getConnection();
     		stat = con.createStatement();
-    		String sql = "update consumer set name='"+name+"',address='"+address+"',mobile='"+mobile+"',nic='"+nic+"', email='"+email+"',username='"+username+"',password='"+password+"'"+ "where consumerId='"+conId+"'";
+    		String sql = "update consumer set name='"+name+"',address='"+address+"',mobile='"+mobile+"',nic='"+nic+"', email='"+email+"',"
+    				+ "username='"+username+"',password='"+password+"'"+ "where consumerId='"+conId+"'";
     		int rs = stat.executeUpdate(sql);
     		
     		if(rs > 0) {
