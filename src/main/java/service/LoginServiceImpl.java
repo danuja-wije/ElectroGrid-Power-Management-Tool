@@ -63,10 +63,10 @@ public class LoginServiceImpl implements LoginService {
 
 		String[] details = decodeString.split(":"); 
 
-		String email = details[0];
+		String userID = details[0];
 		String password = details[1];
 
-		return authenticate(email, password);
+		return authenticate(userID, password);
 	}
 	@Override
 	public boolean authenticate(String userID,String password) {
@@ -90,7 +90,7 @@ public class LoginServiceImpl implements LoginService {
 
 			while (resultSet.next()) {
 
-				usr = resultSet.getString("email");
+				usr = resultSet.getString("userID");
 				pss = resultSet.getString("password");
 
 			}
