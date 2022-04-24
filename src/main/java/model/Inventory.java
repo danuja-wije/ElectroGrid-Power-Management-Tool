@@ -8,6 +8,7 @@ public class Inventory {
 	private int stockQty;
 	private String manufactYr;
 	private String latestRepairDate;
+	private String handledBy;
 	private String createdTime;
 	private String updatedTime;
 	
@@ -18,7 +19,7 @@ public class Inventory {
 	}
 	
 	public Inventory(int invID, String invItemCode, String invItemName, int stockQty, String manufactYr,
-			String latestRepairDate, String createdTime, String updatedTime) {
+			String latestRepairDate, String handledBy, String createdTime, String updatedTime) {
 		super();
 		this.invID = invID;
 		this.invItemCode = invItemCode;
@@ -26,6 +27,7 @@ public class Inventory {
 		this.stockQty = stockQty;
 		this.manufactYr = manufactYr;
 		this.latestRepairDate = latestRepairDate;
+		this.handledBy = handledBy;
 		this.createdTime = createdTime;
 		this.updatedTime = updatedTime;
 	}
@@ -60,6 +62,10 @@ public class Inventory {
 
 	public String getUpdatedTime() {
 		return updatedTime;
+	}
+
+	public String getHandledBy() {
+		return handledBy;
 	}
 	
 }
