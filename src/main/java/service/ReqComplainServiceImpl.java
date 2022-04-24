@@ -86,9 +86,8 @@ public class ReqComplainServiceImpl implements ReqComplainService{
 	
 	//View Requests
 	@Override
-	public ArrayList<ReqComplain> viewRequest(String UID) {
+	public ArrayList<ReqComplain> viewRequest(String id) {
 		//Request attributes
-		String id = "";
 		String customerID = "";
 		String type = "";
 		String description = "";
