@@ -24,4 +24,11 @@ public class LoginController {
 			return "False";
 		}
 	}
+	
+	@GET
+	@Path("/User")
+	@Produces(MediaType.TEXT_PLAIN)
+	public String getUser(@HeaderParam("Authorization") String auth) {
+		return loginService.getCurrentUser(auth);
+	}
 }
