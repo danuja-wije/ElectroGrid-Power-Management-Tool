@@ -60,7 +60,7 @@ public class MaintenencrServiceImpl implements MaintenanceService {
 				return output;
 			}
 
-			query = "INSERT INTO `interruption` (`intType`, `title`, `description`, `approval`, `interruptionStart`, `interruptionEnd`) VALUES (?,?,?,?,?,?)";
+			query = "INSERT INTO `interruption` (`intType`, `title`, `description`, `approval`, `interruptionStart`, `interruptionEnd`,`handledBy`) VALUES (?,?,?,?,?,?,?)";
  
 			
 			String query2= "INSERT INTO `efectedcustomer` (`interrruptionID`, `customerID`) VALUES (?, ?)";
@@ -72,6 +72,7 @@ public class MaintenencrServiceImpl implements MaintenanceService {
 			preparedStatement.setString(4, interruption.getApproval());
 			preparedStatement.setString(5, interruption.getInterruptionStartDate());
 			preparedStatement.setString(6, interruption.getInterruptionEndDate());
+			preparedStatement.setString(7, interruption.getHandledBy());
 			preparedStatement.execute();
 			
 			int id = 0;
@@ -120,10 +121,13 @@ public class MaintenencrServiceImpl implements MaintenanceService {
 			statement = connection.createStatement();
 			resultSet = statement.executeQuery(query);
 
-
-
+			
+			ResultSet rs = null;
+			
 			while (resultSet.next()) {
-
+				Statement st = connection.createStatement();
+				List<String>efList = new ArrayList<String>();
+				
 				int id = resultSet.getInt("id");
 				String inType = resultSet.getString("intType");
 				String title = resultSet.getString("title");
@@ -132,8 +136,18 @@ public class MaintenencrServiceImpl implements MaintenanceService {
 				String timestamp = resultSet.getString("timestamp");
 				String startDate = resultSet.getTimestamp("interruptionStart").toString();
 				String endDate = resultSet.getTimestamp("interruptionEnd").toString();
+				String handledBy = resultSet.getString("handledBy");
+//				
+				String query2 = "SELECT * FROM `efectedcustomer` WHERE interrruptionID ='"+id+"'";
+				
+				rs = st.executeQuery(query2);
 
-				interruption = new Interruption(inType, title, description, startDate, endDate,null,approval);
+				while(rs.next()) {
+					efList.add(rs.getString("customerID"));
+				}
+				
+				
+				interruption = new Interruption(inType, title, description, startDate, endDate,efList,approval,handledBy);
 				interruption.setId(id);
 				interruption.setTimeStamp(timestamp);
 				list.add(interruption);
