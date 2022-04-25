@@ -8,6 +8,6 @@ public interface MaintenanceService {
 	public String insertInterruption(Interruption interruption);
 	public List<Interruption> allInterruptions();
 	public String updateInterruption(Interruption interruption);
-	public String updateEffectedCustomer(List<String>list);
+	public String updateEffectedCustomer(int id,String[] list);
 	public String deleteInterruption(int id);
 }
