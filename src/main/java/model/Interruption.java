@@ -9,12 +9,13 @@ public class Interruption {
 	private String description;
 	private String interruptionStartDate;
 	private String interruptionEndDate;
-	private List<Employee>efectedList;
+	private List<String> efectedList;
 	private String approval;
 	private String timeStamp;
+	private String handledBy;
 	
 	public Interruption(String inType, String title, String description, String interruptionStartDate,
-			String interruptionEndDate, List<Employee> efectedList, String approval) {
+			String interruptionEndDate, List<String> efectedList, String approval,String handledBy) {
 		super();
 		this.inType = inType;
 		this.title = title;
@@ -24,6 +25,7 @@ public class Interruption {
 
 		this.efectedList = efectedList;
 		this.approval = approval;
+		this.handledBy = handledBy;
 	}
 
 	public int getId() {
@@ -50,7 +52,7 @@ public class Interruption {
 		return interruptionEndDate;
 	}
 
-	public List<Employee> getEfectedList() {
+	public List<String> getEfectedList() {
 		return efectedList;
 	}
 
@@ -65,5 +67,9 @@ public class Interruption {
 	public void setTimeStamp(String timeStamp) {
 		this.timeStamp = timeStamp;
 	}
-	
+
+	public String getHandledBy() {
+		return handledBy;
+	}
+
 }
