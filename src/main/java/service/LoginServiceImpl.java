@@ -29,7 +29,7 @@ public class LoginServiceImpl implements LoginService {
 			try {
 				Class.forName(DRIVER);
 				connection = DriverManager.getConnection(URL,USERNAME,PASSWORD);
-				System.out.println("Successfully Connected Electro Main Database");
+				System.out.println("Successfully Connected Electro Login Database");
 
 
 			} catch (ClassNotFoundException e) {
@@ -107,6 +107,33 @@ public class LoginServiceImpl implements LoginService {
 		}
 		return output;
 
+	}
+
+
+	@Override
+	public String getCurrentUser(String auth) {
+		// TODO Auto-generated method stub
+		String decodeString = "";
+		String[] authParts = auth.split("\\s+");
+		String authInfo = authParts[1];
+
+		byte[] bytes = null;
+		try {
+			bytes =  Base64.getDecoder().decode(authInfo);
+		} catch (Exception e) {
+			// TODO: handle exception
+			System.err.println(e.getMessage());
+		}
+		// TODO Auto-generated method stub
+
+		decodeString = new String(bytes);
+		System.out.println(decodeString);
+
+		String[] details = decodeString.split(":"); 
+
+		String userID = details[0];
+
+		return userID;
 	}
 
 }
