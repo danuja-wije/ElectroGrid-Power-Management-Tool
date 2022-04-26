@@ -13,10 +13,15 @@ import model.Interruption;
 
 public class MaintenencrServiceImpl implements MaintenanceService {
 
+	//connection details
+
 	private static final String USERNAME= "root";
 	private static final String PASSWORD = "";
 	private static final String URL = "jdbc:mysql://127.0.0.1:3306/electro_db";
 	private static final String DRIVER = "com.mysql.cj.jdbc.Driver";
+
+	//initialize variables
+
 	Connection connection = null;
 	PreparedStatement preparedStatement = null;
 	Statement statement = null;
@@ -25,6 +30,7 @@ public class MaintenencrServiceImpl implements MaintenanceService {
 	Interruption interruption = null;
 	private String query = "";
 
+	//create connection
 	private Connection connect() throws SQLException {
 		if(connection != null && !connection.isClosed()) {
 			return connection;
@@ -45,7 +51,7 @@ public class MaintenencrServiceImpl implements MaintenanceService {
 		return connection;
 	}
 
-
+	//	=====================================INSERT LOGIC=========================================
 
 	@Override
 	public String insertInterruption(Interruption interruption) {
@@ -61,10 +67,10 @@ public class MaintenencrServiceImpl implements MaintenanceService {
 			}
 
 			query = "INSERT INTO `interruption` (`intType`, `title`, `description`, `approval`, `interruptionStart`, `interruptionEnd`,`handledBy`) VALUES (?,?,?,?,?,?,?)";
- 
-			
+
+
 			String query2= "INSERT INTO `efectedcustomer` (`interrruptionID`, `customerID`) VALUES (?, ?)";
-			
+
 			preparedStatement = connection.prepareStatement(query,Statement.RETURN_GENERATED_KEYS);
 			preparedStatement.setString(1, interruption.getInType());
 			preparedStatement.setString(2, interruption.getTitle());
@@ -74,25 +80,25 @@ public class MaintenencrServiceImpl implements MaintenanceService {
 			preparedStatement.setString(6, interruption.getInterruptionEndDate());
 			preparedStatement.setString(7, interruption.getHandledBy());
 			preparedStatement.execute();
-			
+
 			int id = 0;
 			try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
-		            if (generatedKeys.next()) {
-		                id = generatedKeys.getInt(1);
-		            }
-		            else {
-		                throw new SQLException("Creating user failed, no ID obtained.");
-		            }
-		        }
+				if (generatedKeys.next()) {
+					id = generatedKeys.getInt(1);
+				}
+				else {
+					throw new SQLException("Creating user failed, no ID obtained.");
+				}
+			}
 			preparedStatement = connection.prepareStatement(query2);
 
-			
+
 			for (String custID : interruption.getEfectedList()) {
 				preparedStatement.setInt(1, id);
 				preparedStatement.setString(2, custID);
 				preparedStatement.execute();
 			}
-			
+
 			connection.close();
 
 			output = "Interted Successfully";
@@ -106,6 +112,8 @@ public class MaintenencrServiceImpl implements MaintenanceService {
 
 		return output;
 	}
+
+	//	=====================================RETRIVE LOGIC=========================================
 
 	@Override
 	public List<Interruption> allInterruptions() {
@@ -121,13 +129,13 @@ public class MaintenencrServiceImpl implements MaintenanceService {
 			statement = connection.createStatement();
 			resultSet = statement.executeQuery(query);
 
-			
+
 			ResultSet rs = null;
-			
+
 			while (resultSet.next()) {
 				Statement st = connection.createStatement();
 				List<String>efList = new ArrayList<String>();
-				
+
 				int id = resultSet.getInt("id");
 				String inType = resultSet.getString("intType");
 				String title = resultSet.getString("title");
@@ -137,16 +145,16 @@ public class MaintenencrServiceImpl implements MaintenanceService {
 				String startDate = resultSet.getTimestamp("interruptionStart").toString();
 				String endDate = resultSet.getTimestamp("interruptionEnd").toString();
 				String handledBy = resultSet.getString("handledBy");
-//				
+				//				
 				String query2 = "SELECT * FROM `efectedcustomer` WHERE interrruptionID ='"+id+"'";
-				
+
 				rs = st.executeQuery(query2);
 
 				while(rs.next()) {
 					efList.add(rs.getString("customerID"));
 				}
-				
-				
+
+
 				interruption = new Interruption(inType, title, description, startDate, endDate,efList,approval,handledBy);
 				interruption.setId(id);
 				interruption.setTimeStamp(timestamp);
@@ -162,6 +170,7 @@ public class MaintenencrServiceImpl implements MaintenanceService {
 		return list;
 	}
 
+	//	=====================================UPDATE LOGIC=========================================
 	@Override
 	public String updateInterruption(Interruption interruption) {
 		// TODO Auto-generated method stub
@@ -218,15 +227,15 @@ public class MaintenencrServiceImpl implements MaintenanceService {
 				return output;
 			}
 
-			query = "DELETE FROM efectedcustomer WHERE `efectedcustomer`.`interrruptionID` = ? AND `efectedcustomer`.`customerID` = ?";
-			
-			String query2 = "SELECT * FROM `efectedcustomer` WHERE `efectedcustomer`.`interrruptionID` = "+interruptionID;
-			
-			String query3 = "INSERT INTO `efectedcustomer` (`interrruptionID`, `customerID`) VALUES (?, ?)";
-			
+			query = "DELETE FROM efectedcustomer WHERE `efectedcustomer`.`interrruptionID` = ? AND `efectedcustomer`.`customerID` = ?"; //delete effected customers
+
+			String query2 = "SELECT * FROM `efectedcustomer` WHERE `efectedcustomer`.`interrruptionID` = "+interruptionID; //get current effected customer
+
+			String query3 = "INSERT INTO `efectedcustomer` (`interrruptionID`, `customerID`) VALUES (?, ?)"; //insert newer effected customer
+
 			statement = connection.createStatement();
 			resultSet = statement.executeQuery(query2);
-			
+
 			String[] new_list = list;
 			List<String>array = new ArrayList<String>();
 
@@ -263,10 +272,13 @@ public class MaintenencrServiceImpl implements MaintenanceService {
 	}
 
 
-
+	//	=====================================DELETE LOGIC=========================================
 	@Override
 	public String deleteInterruption(int id) {
 		// TODO Auto-generated method stub
+		
+
+		
 		String output = "";
 
 		try {
@@ -277,8 +289,9 @@ public class MaintenencrServiceImpl implements MaintenanceService {
 				return output;
 			}
 
-			query = "DELETE FROM interruption WHERE `interruption`.`id` = ?";
-
+			query = "DELETE FROM interruption WHERE `interruption`.`id` = ?"; //delete interruptions
+			
+			//executing delete interruption query
 			preparedStatement = connection.prepareStatement(query);
 
 			preparedStatement.setInt(1, id);
