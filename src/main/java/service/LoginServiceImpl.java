@@ -59,7 +59,6 @@ public class LoginServiceImpl implements LoginService {
 		// TODO Auto-generated method stub
 
 		decodeString = new String(bytes);
-		System.out.println(decodeString);
 
 		String[] details = decodeString.split(":"); 
 
@@ -73,9 +72,7 @@ public class LoginServiceImpl implements LoginService {
 		boolean output = false;
 		String usr= "";
 		String pss = "";
-		
-		System.out.println(userID);
-		System.out.println(password);
+
 		query = "SELECT * FROM `authdetails` WHERE `authdetails`.`userID` ='"+userID+"' AND `authdetails`.`password` ='"+password+"'";
 		try {
 			connection = connect();
@@ -127,7 +124,7 @@ public class LoginServiceImpl implements LoginService {
 		// TODO Auto-generated method stub
 
 		decodeString = new String(bytes);
-		System.out.println(decodeString);
+
 
 		String[] details = decodeString.split(":"); 
 
