@@ -6,6 +6,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -15,7 +16,9 @@ import javax.ws.rs.core.MediaType;
 
 
 import com.google.gson.Gson;
+import com.mysql.cj.xdevapi.Client;
 
+import client.ClientManager;
 import model.Inventory;
 import service.InventoryService;
 import service.InventoryServiceImpl;
@@ -24,7 +27,7 @@ import service.InventoryServiceImpl;
 public class InventoryController {
 	
 	InventoryService invService = new InventoryServiceImpl();
-	
+	ClientManager clientManager = new ClientManager();
 	ArrayList<Inventory> invObjs = new ArrayList<>();
 	
 	//Insert 
@@ -34,9 +37,10 @@ public class InventoryController {
 	@Produces(MediaType.TEXT_PLAIN)
 	public String createInventory( @FormParam("invID") int id,@FormParam("invItemCode") String code,@FormParam("invItemName") String name,
 								@FormParam("stockQty") int qty, @FormParam("manufactYr") String manufact, @FormParam("latestRepairDate") String repair,
-								@FormParam("handledBy") String handle,@FormParam("createdTime") String created, @FormParam("updatedTime") String updated){
-		
-			String output = invService.insertInventory(new Inventory(id,code,name,qty,manufact,repair,handle,created,updated));
+								@FormParam("createdTime") String created, @FormParam("updatedTime") String updated,@HeaderParam("Authorization") String auth){
+			
+			String currentUser = clientManager.getCurrentUser(auth);
+			String output = invService.insertInventory(new Inventory(id,code,name,qty,manufact,repair,currentUser,created,updated));
 			return output;
 	}
 	
