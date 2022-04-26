@@ -60,7 +60,7 @@ public class ReqComplainServiceImpl implements ReqComplainService{
 			}
 
 			//Query
-			query = "INSERT INTO `requests` (`id`, `cutomerID`, `type`, `description`)"
+			query = "INSERT INTO `requests` (`id`, `customerID`, `type`, `description`)"
 					+ " VALUES (?, ?, ?, ?)";
 
 			preparedStatement = connection.prepareStatement(query);
