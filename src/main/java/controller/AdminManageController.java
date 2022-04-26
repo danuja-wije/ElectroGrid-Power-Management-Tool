@@ -40,9 +40,9 @@ public class AdminManageController {
 	
 	//View
 	@GET
-	@Path("/View/{empID}")
+	@Path("/View")
 	@Produces(MediaType.APPLICATION_JSON)
-	public String viewEmployees(@PathParam("empID") String empID) {
+	public String viewEmployees() {
 		Gson gson = new Gson();
 		employees = adminService.viewEmployees(empID);
 		String jsonString  = gson.toJson(employees);
