@@ -33,7 +33,7 @@ public class BillController {
 	@Path("/Generatebill")
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	@Produces(MediaType.TEXT_PLAIN)
-	public String insertCard(@FormParam("user_ID") String userID , @FormParam("account_ID") String account_ID, @FormParam("year") int year, @FormParam("month") String month
+	public String insertBill(@FormParam("user_ID") String userID , @FormParam("account_ID") String account_ID, @FormParam("year") int year, @FormParam("month") String month
 			,String date_created, @FormParam("units") float units, @FormParam("unit_price") float unit_price) {
 		float charge = units * unit_price;
 
@@ -103,7 +103,7 @@ public class BillController {
 	@Path("/Updatebill/{bill_ID}")
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	@Produces(MediaType.TEXT_PLAIN)
-	public String updateCard(@PathParam("bill_ID") int bill_ID , @FormParam("units") float units
+	public String updateBill(@PathParam("bill_ID") int bill_ID , @FormParam("units") float units
 			,@FormParam("unit_price") float unit_price, @FormParam("charge") float charge) {
 		if(charge == 0) {
 			charge = units * unit_price;
