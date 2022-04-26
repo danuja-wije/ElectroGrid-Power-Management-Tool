@@ -71,7 +71,7 @@ public class PaymentServiceImpl implements PaymentService{
 			preparedStatement.setString(1, payment.getUser_ID());
 			preparedStatement.setInt(2, payment.getBill_ID());
 			preparedStatement.setFloat(3, payment.getAmount());
-			preparedStatement.setLong(4, payment.getCard_number());
+			preparedStatement.setString(4, payment.getCard_number());
 
 			preparedStatement.execute();
 			connection.close();
@@ -97,7 +97,7 @@ public class PaymentServiceImpl implements PaymentService{
 		int bill_ID = 0;
 		String transaction_date = "";
 		float amount = 0;
-		long card_number = 0;
+		String card_number = "";
 		long payment_ID = 0;
 
 
@@ -126,7 +126,7 @@ public class PaymentServiceImpl implements PaymentService{
 				bill_ID = resultSet.getInt("bill_ID");
 				transaction_date = resultSet.getString("transaction_date");
 				amount = resultSet.getFloat("amount");
-				card_number = resultSet.getLong("card_number");
+				card_number = resultSet.getString("card_number");
 				payment_ID = resultSet.getLong("payment_ID");
 
 				//Add to list

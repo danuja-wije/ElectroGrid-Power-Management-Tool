@@ -5,11 +5,11 @@ public class Payment {
 	private int bill_ID;
 	private String transaction_date;
 	private float amount;
-	private long card_number;
+	private String card_number;
 	private long payment_ID;
 
 	//Constructor
-	public Payment(String user_ID, int bill_ID, String transaction_date, float amount, long card_number, long payment_ID) {
+	public Payment(String user_ID, int bill_ID, String transaction_date, float amount, String card_number, long payment_ID) {
 		super();
 		this.user_ID = user_ID;
 		this.bill_ID = bill_ID;
@@ -19,7 +19,7 @@ public class Payment {
 		this.payment_ID = payment_ID;
 	}
 
-	public Payment(String user_ID, int bill_ID, float amount, long card_number) {
+	public Payment(String user_ID, int bill_ID, float amount, String card_number) {
 		this.user_ID = user_ID;
 		this.bill_ID = bill_ID;
 		this.amount = amount;
@@ -59,11 +59,11 @@ public class Payment {
 		this.amount = amount;
 	}
 
-	public long getCard_number() {
+	public String getCard_number() {
 		return card_number;
 	}
 
-	public void setCard_number(long card_number) {
+	public void setCard_number(String card_number) {
 		this.card_number = card_number;
 	}
 
