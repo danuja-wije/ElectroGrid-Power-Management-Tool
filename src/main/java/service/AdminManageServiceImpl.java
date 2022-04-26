@@ -86,9 +86,8 @@ public class AdminManageServiceImpl implements AdminManageService{
 	
 	//View Employees
 	@Override
-	public ArrayList<Employee> viewEmployees(String UID) {
+	public ArrayList<Employee> viewEmployees(String empID) {
 		//Employee attributes
-		String empID = "";
 		String name = "";
 		String email = "";
 		String empType = "";
@@ -106,7 +105,7 @@ public class AdminManageServiceImpl implements AdminManageService{
 			}
 			
 			//Query
-			query = "SELECT * FROM employees WHERE empID = " + empID;
+			query = "SELECT * FROM employees WHERE empID = " + "'"+empID+"'";
 			
 			//Execute
 			statement = connection.createStatement();
