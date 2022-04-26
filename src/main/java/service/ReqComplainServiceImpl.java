@@ -105,7 +105,7 @@ public class ReqComplainServiceImpl implements ReqComplainService{
 			}
 			
 			//Query
-			query = "SELECT * FROM requests WHERE id = " + id;
+			query = "SELECT * FROM requests WHERE id = " + "'"+id+"'";
 			
 			//Execute
 			statement = connection.createStatement();
@@ -140,7 +140,7 @@ public class ReqComplainServiceImpl implements ReqComplainService{
 			}
 
 			//Query
-			query = "UPDATE requests SET customerID = ?, type = ?, description = ? WHERE id = " + id;
+			query = "UPDATE requests SET customerID = ?, type = ?, description = ? WHERE id = " + "'"+id+"'";
 
 			preparedStatement = connection.prepareStatement(query);
 
@@ -175,7 +175,7 @@ public class ReqComplainServiceImpl implements ReqComplainService{
 			}
 			
 			//Query
-			query = "DELETE FROM requests WHERE id = " + id;
+			query = "DELETE FROM requests WHERE id = " + "'"+id+"'";
 			statement = connection.createStatement();
 			int del = statement.executeUpdate(query);
 			
