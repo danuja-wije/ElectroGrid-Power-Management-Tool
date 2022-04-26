@@ -60,7 +60,7 @@ public class AdminManageServiceImpl implements AdminManageService{
 			}
 
 			//Query
-			query = "INSERT INTO `employees` (`empID`, `name`, `email`, `empType`)"
+			query = "INSERT INTO `employee` (`empID`, `name`, `email`, `empType`)"
 					+ " VALUES (?, ?, ?, ?)";
 
 			preparedStatement = connection.prepareStatement(query);
@@ -105,7 +105,7 @@ public class AdminManageServiceImpl implements AdminManageService{
 			}
 			
 			//Query
-			query = "SELECT * FROM employees WHERE empID = " + "'"+empID+"'";
+			query = "SELECT * FROM employee WHERE empID = " + "'"+empID+"'";
 			
 			//Execute
 			statement = connection.createStatement();
@@ -140,7 +140,7 @@ public class AdminManageServiceImpl implements AdminManageService{
 			}
 
 			//Query
-			query = "UPDATE employees SET name = ?, email = ?, empType = ? WHERE empID = " + empID;
+			query = "UPDATE employee SET name = ?, email = ?, empType = ? WHERE empID = " + "'"+empID+"'";
 
 			preparedStatement = connection.prepareStatement(query);
 
@@ -175,7 +175,7 @@ public class AdminManageServiceImpl implements AdminManageService{
 			}
 			
 			//Query
-			query = "DELETE FROM employees WHERE empID = " + empID;
+			query = "DELETE FROM employee WHERE empID = " + "'"+empID+"'";
 			statement = connection.createStatement();
 			int del = statement.executeUpdate(query);
 			
