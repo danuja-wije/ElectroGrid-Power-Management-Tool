@@ -26,7 +26,7 @@ import service.CreditCardService;
 import service.CreditCardServiceImpl;
 
 
-@Path("/CrecitCard")
+@Path("/CreditCard")
 public class CreditCardController {
 
 
