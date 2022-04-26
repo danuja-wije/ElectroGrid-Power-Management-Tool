@@ -1,7 +1,7 @@
 package model;
 
 public class Inventory {
-	
+
 	private int invID;
 	private String invItemCode;
 	private String invItemName;
@@ -11,13 +11,12 @@ public class Inventory {
 	private String handledBy;
 	private String createdTime;
 	private String updatedTime;
-	
-	
+
 	public Inventory() {
 		super();
-		
+
 	}
-	
+
 	public Inventory(int invID, String invItemCode, String invItemName, int stockQty, String manufactYr,
 			String latestRepairDate, String handledBy, String createdTime, String updatedTime) {
 		super();
@@ -30,6 +29,18 @@ public class Inventory {
 		this.handledBy = handledBy;
 		this.createdTime = createdTime;
 		this.updatedTime = updatedTime;
+	}
+
+
+	public Inventory(String invItemCode, String invItemName, int stockQty, String manufactYr, String latestRepairDate,
+			String handledBy) {
+		super();
+		this.invItemCode = invItemCode;
+		this.invItemName = invItemName;
+		this.stockQty = stockQty;
+		this.manufactYr = manufactYr;
+		this.latestRepairDate = latestRepairDate;
+		this.handledBy = handledBy;
 	}
 
 	public int getInvID() {
@@ -67,5 +78,5 @@ public class Inventory {
 	public String getHandledBy() {
 		return handledBy;
 	}
-	
+
 }

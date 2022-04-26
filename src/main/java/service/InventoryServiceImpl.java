@@ -1,18 +1,19 @@
 package service;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.ResultSet;
+
 import java.util.ArrayList;
 
 import model.Inventory;
 
 public class InventoryServiceImpl implements InventoryService {
-	
-	//DB parameters
+
+	//parameters for DB connection
 	private static final String USERNAME = "root";
 	private static final String URL = "jdbc:mysql://127.0.0.1:3306/electrogriddb";
 	private static final String DRIVER = "com.mysql.cj.jdbc.Driver";
@@ -22,12 +23,12 @@ public class InventoryServiceImpl implements InventoryService {
 	private static PreparedStatement preparedStmt = null;
 	private static Statement stmt = null;
 	private static ResultSet rs = null;
-	
+
 	String output = "";
-		
+
 	//Connect to DB
 	private Connection connect() throws SQLException {
-		
+
 		if (con != null && !con.isClosed()) {
 			return con;
 		}
@@ -35,32 +36,32 @@ public class InventoryServiceImpl implements InventoryService {
 			try {
 				Class.forName(DRIVER);
 				con = DriverManager.getConnection(URL,USERNAME,PASSWORD);
-				
+
 				System.out.println("Successfully Connected");
-				
+
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			
+
 			return con;
 		}
 	}
-	
+
 	//Insert a inventory item
 	@Override
 	public String insertInventory(Inventory inv) {
 		try {
 			con  = connect();
-			
+
 			if (con == null ) {
-				output = "Error while connectiong to the database";
+				output = "Error while connecting to the database";
 				return output;
 			}
 
 			//Query
 			query = "INSERT INTO `inventory` (`invID`, `invItemCode`, `invItemName`,`stockQty`,"
 					+ "`manufactYr`, `latestRepairDate`,`handledBy`,`createdTime`,`updatedTime`)"
-						+ " VALUES (NULL, ?, ?, ?, ?, ?, ?, NULL, NULL)";
+					+ " VALUES (NULL, ?, ?, ?, ?, ?, ?, NULL, NULL)";
 
 			preparedStmt = con.prepareStatement(query);
 
@@ -81,10 +82,10 @@ public class InventoryServiceImpl implements InventoryService {
 			output = "Error while inserting a inventory item";
 			System.err.println(e.getMessage());
 		}
-		
+
 		return output;
 	}
-	
+
 
 	//View all inventory items
 	@Override
@@ -99,26 +100,26 @@ public class InventoryServiceImpl implements InventoryService {
 		String handle ="";
 		String created = "";
 		String updated = "";
-		
+
 		//Inventory List
 		ArrayList<Inventory> invList = new ArrayList<Inventory>();
-		
+
 		//Connection
 		try {
 			con = connect();
-			
+
 			if(con == null) {
 				System.err.println("Error while connecting to the database");
 				return null;
 			}
-			
+
 			//Query
 			query = "SELECT * FROM inventory ";
-			
+
 			//Execute
 			stmt = con.createStatement();
 			rs = stmt.executeQuery(query);
-			
+
 			//Get all results
 			while(rs.next()) {
 				invID = rs.getInt("invID");
@@ -130,20 +131,20 @@ public class InventoryServiceImpl implements InventoryService {
 				handle = rs.getString("handledBy");
 				created = rs.getString("createdTime");
 				updated = rs.getString("updatedTime");
-				
+
 				//Add to list
 				invList.add(new Inventory(invID,code,name,qty,manufact,repair,handle,created,updated));
-				
+
 			}
 			con.close();
-			
-			
+
+
 		}catch(Exception e) {
 			System.err.println("Error getting data " + e.getMessage());
 		}
 		return invList;
 	}
-	
+
 	//View a inventory item
 	@Override
 	public ArrayList<Inventory> readInventory(int specificID) {
@@ -157,26 +158,26 @@ public class InventoryServiceImpl implements InventoryService {
 		String handle ="";
 		String created = "";
 		String updated = "";
-		
+
 		//Inventory List
 		ArrayList<Inventory> invList = new ArrayList<Inventory>();
-		
+
 		//Connection
 		try {
 			con = connect();
-			
+
 			if(con == null) {
 				System.err.println("Error while connecting to the database");
 				return null;
 			}
-			
+
 			//Query
 			query = "SELECT * FROM inventory WHERE invID = " + specificID;
-			
+
 			//Execute
 			stmt = con.createStatement();
 			rs = stmt.executeQuery(query);
-			
+
 			//Get all results
 			while(rs.next()) {
 				invID = rs.getInt("invID");
@@ -188,27 +189,27 @@ public class InventoryServiceImpl implements InventoryService {
 				handle = rs.getString("handledBy");
 				created = rs.getString("createdTime");
 				updated = rs.getString("updatedTime");
-				
+
 				//Add to list
 				invList.add(new Inventory(invID,code,name,qty,manufact,repair,handle,created,updated));
-				
+
 			}
 			con.close();
-			
-			
+
+
 		}catch(Exception e) {
 			System.err.println("Error getting data " + e.getMessage());
 		}
 		return invList;
 	}
-	
+
 
 	//Update a inventory item
 	@Override
 	public String updateInventory(int invID,Inventory inv) {
 		try {
 			con  = connect();
-			
+
 			if (con == null ) {
 				output = "Error while connectiong to the database";
 				return output;
@@ -217,7 +218,7 @@ public class InventoryServiceImpl implements InventoryService {
 			//Query
 			query = "UPDATE inventory SET invItemCode = ? , invItemName =?,stockQty=?,manufactYr=?,"
 					+ "latestRepairDate=?,handledBy=? WHERE invID =" +invID;
-	
+
 
 			preparedStmt = con.prepareStatement(query);
 
@@ -238,33 +239,33 @@ public class InventoryServiceImpl implements InventoryService {
 			output = "Error while updating a inventory item";
 			System.err.println(e.getMessage());
 		}
-		
+
 		return output;
 	}
-	
+
 	//Delete a record
 	@Override
 	public String deleteInventory(int invID) {
 		try {
 			con = connect();
-			
+
 			if(con == null) {
-				output = "Error while connectiong to the database";
+				output = "Error while connecting to the database";
 				return output;
 			}
-			
+
 			//Query
 			query = "DELETE FROM inventory WHERE invID = " + invID;
 			stmt = con.createStatement();
 			int result = stmt.executeUpdate(query);
-			
+
 			if(result > 0) {
 				output = "Deleted successfully";
 			}
 			else {
 				output = "Inventory Item not found";
 			}
-			
+
 		}catch(Exception e) {
 			output = "Error deleting data " + e.getMessage();
 			System.err.println(output);
@@ -273,4 +274,3 @@ public class InventoryServiceImpl implements InventoryService {
 		return output;
 	}
 }
-
